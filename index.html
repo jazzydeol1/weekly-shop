@@ -268,7 +268,7 @@
   function wire() {
     const who = $("#who");
     if (who) {
-      const known = [...new Set(["Pam", "Jas", ...state.votes.map(v => v.name)])].slice(0, 8);
+      const known = [...new Set(["Pam", "Jas", "Rajan", "Ria", ...state.votes.map(v => v.name)])].slice(0, 8);
       $("#chips").innerHTML = known.map(n => `<button class="chip" type="button">${esc(n)}</button>`).join("");
       $("#chips").addEventListener("click", e => { if (e.target.matches(".chip")) { who.value = e.target.textContent; store.set("name", who.value); } });
       who.addEventListener("change", () => store.set("name", who.value.trim()));
