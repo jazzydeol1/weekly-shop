@@ -1,11 +1,14 @@
 {
-  "version": 2,
-  "week": "2026-11-15",
-  "title": "Practice week",
-  "preview": true,
-  "voteBy": "Tue 17 Nov, 6pm",
+  "version": 3,
+  "week": "2026-11-21",
+  "title": "Test shop · Sat 21 Nov",
+  "preview": false,
+  "status": "voting",
+  "voteBy": "Sun 15 Nov, 4pm",
+  "approveBy": "Sun 15 Nov, 7pm",
+  "delivery": "Sat 21 Nov, morning",
   "budget": 122,
-  "note": "Practice run: try voting, liking and quick add. Nothing gets ordered. The first real shop arrives Wed 18 Nov.",
+  "note": "Weekend test: vote by Sunday 4pm, Pam signs off by 7pm, and Claude places the order for Saturday morning. Prices were checked on Ocado this week and are rechecked when the trolley is filled.",
   "family": [
     { "name": "Pam", "initials": "P", "color": "#1E6B47" },
     { "name": "Jas", "initials": "J", "color": "#1F5FA8" },
@@ -15,37 +18,46 @@
   "approver": "Pam",
   "polls": [
     { "id": "main1", "question": "Midweek dinner", "options": [
-      { "key": "A", "label": "Lamb", "detail": "2 packs of 4 rump steaks", "price": 16.70, "lastHad": "1 wk ago" },
-      { "key": "B", "label": "Chicken thighs", "detail": "1kg, as a traybake", "price": 10.00, "lastHad": "5 wks ago" } ] },
+      { "key": "A", "label": "Spaghetti bolognese", "detail": "2 packs Ocado 5% beef mince + spaghetti", "price": 16.20, "lastHad": "a few wks ago" },
+      { "key": "B", "label": "Chicken thigh traybake", "detail": "M&S Oakham Gold thigh fillets + roast veg", "price": 12.50, "lastHad": "a few wks ago" } ] },
     { "id": "fish", "question": "Fish night", "options": [
-      { "key": "A", "label": "Salmon", "detail": "Mowi fillets x2", "price": 10.00, "deal": "2 for £10", "lastHad": "2 wks ago" },
-      { "key": "B", "label": "Prawn stir-fry", "detail": "Jumbo prawns + noodles", "price": 10.50, "lastHad": "1 wk ago" } ] },
-    { "id": "treat", "question": "Friday treat", "options": [
-      { "key": "A", "label": "Pizza night", "detail": "Pizza Express American x2", "price": 11.00, "lastHad": "3 wks ago" },
-      { "key": "B", "label": "Fajitas", "detail": "Chicken, wraps, salsa, sour cream", "price": 12.50, "lastHad": "6 wks ago" } ] }
+      { "key": "A", "label": "Salmon", "detail": "Mowi fillets, 2 packs", "price": 10.00, "deal": "2 for £10, same as you paid last time", "lastHad": "this week" },
+      { "key": "B", "label": "Sea bream", "detail": "Fish Said Fred big fillets x2", "price": 8.00, "lastHad": "a while ago" } ] },
+    { "id": "treat", "question": "Weekend treat", "options": [
+      { "key": "A", "label": "Fajita night", "detail": "Chicken, wraps, salsa, sour cream", "price": 12.50, "lastHad": "a while ago" },
+      { "key": "B", "label": "Pizza night", "detail": "Pizza Express American x2: £5.50 each now, you paid £2.75 on offer last time", "price": 11.00, "lastHad": "a few wks ago" } ] }
   ],
   "goodValue": [
-    { "id": "pork", "name": "Packington free-range pork medallions", "deal": "2 for £10", "price": 10.00, "why": "Free-range version of last week's pork" },
-    { "id": "prawns", "name": "Tiger Delight jumbo king prawns", "deal": "£4.50, was £5", "price": 4.50, "why": "Freezer stock-up while they're cheaper" },
-    { "id": "cranb", "name": "Stokes cranberry sauce", "deal": "£3, was £3.90", "price": 3.00, "why": "Cheaper now than in December" }
+    { "id": "bol", "name": "BOL power soups", "deal": "2 for £5", "price": 5.00, "value": "£2.50 each instead of £3.50: 29% off", "why": "You buy these most weeks for lunches. Worth taking 2 or 4 while the multibuy is on." },
+    { "id": "prawns", "name": "Tiger Delight jumbo cooked king prawns", "deal": "£4.50, was £5", "price": 4.50, "value": "10% off, and they keep in the freezer", "why": "Ready to eat, so they go straight into a stir-fry, a salad or wraps. A good backup for a busy night." },
+    { "id": "porkswap", "name": "Ocado 4 British pork loin medallions", "deal": "£4.50 for 4", "price": 4.50, "value": "About 30p less per medallion than the Packington ones", "why": "A cheaper swap if you want pork again: same cut, own brand. Pan-fry with apples, which are in season now." }
   ],
   "forYou": [
-    { "id": "gnocchi", "name": "Sunny & Luna pumpkin gnocchi", "price": 4.95, "tag": "New", "why": "New at Ocado, and the gnocchi went down well" },
-    { "id": "clem", "name": "Clementines 600g", "price": 2.50, "tag": "Healthy", "why": "In season now. You get through easy peelers every week" },
-    { "id": "chipotle", "name": "Gran Luchito smoky chipotle paste", "price": 2.75, "tag": "Good fit", "why": "You already buy Gran Luchito tacos" },
-    { "id": "kimchi", "name": "Kimchi", "price": 3.00, "tag": "Healthy", "why": "Good for gut health, great in rice bowls" }
+    { "id": "clem", "name": "Clementines 600g", "price": 2.50, "tag": "In season", "why": "Clementines are at their best from now until January and are sweeter than most easy peelers. Good for lunchboxes, and cheaper than snacks." },
+    { "id": "leeks", "name": "Ocado British leeks 500g", "price": 1.10, "tag": "In season", "value": "You paid £1.10 in a Seasonal Stars offer on 7 Nov", "why": "Leeks and root veg are in season now. Leek and potato soup for 4 costs about £3 and lasts two lunches." },
+    { "id": "gnocchi", "name": "Sunny & Luna pumpkin gnocchi", "price": 4.95, "tag": "Never tried", "why": "You haven't had this before. Pumpkin gnocchi pan-fries in 5 minutes. Serve with brown butter and sage, or spinach and parmesan, for a quick veggie night." },
+    { "id": "flawsome", "name": "Flawsome! juice", "price": 2.99, "tag": "New", "why": "New at Ocado this month. It's pressed from wonky fruit that would otherwise be wasted, with no added sugar. Worth a try instead of the usual juice." }
+  ],
+  "tried": [
+    { "id": "t_lamb", "name": "Ocado lamb rump steaks", "when": "15 Nov shop", "note": "If it came in Sunday's delivery, rate it after you've had it." },
+    { "id": "t_cod", "name": "M&S wild Icelandic cod loins", "when": "15 Nov shop" },
+    { "id": "t_gnocchi", "name": "La Famiglia Rana gnocchi", "when": "15 Nov shop" }
   ],
   "quickAdd": [
-    { "name": "Heinz ketchup", "last": "7 wks ago" },
-    { "name": "Hellmann's mayonnaise", "last": "9 wks ago" },
-    { "name": "Bisto gravy granules", "last": "10 wks ago" },
-    { "name": "Heinz no added sugar baked beans", "last": "4 wks ago" },
-    { "name": "Warburtons crumpet thins", "last": "5 wks ago" },
-    { "name": "Ocado grated Parmigiano", "last": "6 wks ago" },
-    { "name": "Pukka lemon, ginger & manuka tea", "last": "8 wks ago" },
-    { "name": "Tate & Lyle granulated sugar", "last": "11 wks ago" },
-    { "name": "Aunt Bessie's Yorkshire puddings", "last": "12 wks ago" },
-    { "name": "Cirio black beans", "last": "14 wks ago" }
+    { "name": "Heinz no added sugar baked beans", "last": "last 2 months" },
+    { "name": "Heinz spaghetti hoops", "last": "last 2 months" },
+    { "name": "Gran Luchito soft taco shells", "last": "last 2 months" },
+    { "name": "Gran Luchito smoky chipotle paste", "last": "last 2 months" },
+    { "name": "Gran Luchito Cantina black beans", "last": "last 2 months" },
+    { "name": "Warburtons crumpet thins", "last": "last 2 months" },
+    { "name": "Ocado grated Parmigiano Reggiano", "last": "last 2 months" },
+    { "name": "M&S crème fraîche", "last": "last 2 months" },
+    { "name": "M&S Italian unsmoked diced pancetta", "last": "last 2 months" },
+    { "name": "Pukka lemon, ginger & manuka tea", "last": "last 2 months" },
+    { "name": "Tate & Lyle Fairtrade granulated sugar", "last": "last 2 months" },
+    { "name": "Aunt Bessie's bake at home Yorkshires", "last": "last 2 months" },
+    { "name": "Cathedral City mini snack cheeses", "last": "last 2 months" },
+    { "name": "Heinz lentil dahl", "last": "last 2 months" }
   ],
   "regulars": [
     ["Organic semi-skimmed milk 4 pints", 2, 5.30], ["Free range eggs", 1, 2.95], ["Cathedral City cheddar", 1, 3.50],
@@ -57,9 +69,8 @@
     ["Garden peas (frozen)", 1, 4.05], ["Green & Black's 85%", 1, 3.25]
   ],
   "lastHad": [
-    { "name": "Fajitas", "weeks": 6 }, { "name": "Chicken thighs", "weeks": 5 }, { "name": "Beef mince", "weeks": 5 },
-    { "name": "Pizza night", "weeks": 3 }, { "name": "Sea bream", "weeks": 2 }, { "name": "Salmon", "weeks": 2 },
-    { "name": "Roast dinner", "weeks": 1 }, { "name": "Lamb", "weeks": 1 }, { "name": "Prawns", "weeks": 1 }
+    { "name": "Salmon", "weeks": 0 }, { "name": "Lamb", "weeks": 0 }, { "name": "Pork", "weeks": 0 },
+    { "name": "Cod", "weeks": 0 }, { "name": "Prawns", "weeks": 0 }, { "name": "Roast dinner", "weeks": 1 }
   ],
   "pastShops": [
     { "date": "Sun 15 Nov", "total": 121.53 }, { "date": "Sat 7 Nov", "total": 140.25 },

@@ -8,10 +8,13 @@ A small phone app for the family to vote on the weekly Ocado shop. Pam approves 
 3. Pam reviews everyone's picks and approves with her PIN.
 4. Claude reads the approval from the Google Sheet, fills the Ocado trolley and books a weekend slot. Jas confirms the checkout.
 
-## plan.json (version 2)
-Written by Claude each Wednesday. Keys: week (delivery Sunday, YYYY-MM-DD), title, preview (true = practice, never ordered), voteBy, budget, note, family [{name, initials, color}], approver, polls [{id, question, options [{key A/B, label, detail, price, deal?, lastHad}]}], goodValue [{id, name, deal, price, why}], forYou [{id, name, price, tag New|Healthy|Good fit, why}], quickAdd [{name, last}], regulars [[name, qty, price]], lastHad [{name, weeks}], pastShops [{date, total}].
+## plan.json (version 3)
+Written by Claude each Wednesday. Keys: week (delivery Sunday, YYYY-MM-DD), title, preview (true = practice, never ordered), voteBy, budget, note, family [{name, initials, color}], approver, polls [{id, question, options [{key A/B, label, detail, price, deal?, lastHad}]}], goodValue [{id, name, deal, price, value, why}], forYou [{id, name, price, tag New|In season|Never tried|Healthy|Good fit, value?, why}], tried [{id, name, when, note?}] (new items from recent shops to rate), status (voting|approved|ordered), approveBy, delivery, quickAdd [{name, last}], regulars [[name, qty, price]], lastHad [{name, weeks}], pastShops [{date, total}].
 
-Votes in the sheet: picks {pollId: A|B|both, "l_<pickId>": "A" for a like}, comment = JSON {x: [extras]}. Pam's approval: decisions {pollId: A|B|both|none, "p_<pickId>": "A" for picks she added}, note = JSON {x: [extras]}.
+Votes in the sheet: picks {pollId: A|B|both, "l_<pickId>": "A" thumbs up | "B" thumbs down}, comment = JSON {x: [extras], t: {triedId: keep|some|no}}. Pam's approval: decisions {pollId: A|B|both|none, "p_<pickId>": "A" for picks she added}, note = JSON {x: [extras], t: {triedId: keep|some|no}}. The backend keeps at most 10 keys in picks/decisions, so polls + goodValue + forYou must total 10 or fewer.
+
+## tastes.json
+Claude's memory of the family's tastes, updated every Wednesday from the votes: staples (rated "every week"), sometimes (rated "now and then", suggest every few weeks), noThanks (thumbs-down majority or "not again"), likes (themes the family responds to), and log (one line per week).
 
 ## Files
 - `index.html` — the app

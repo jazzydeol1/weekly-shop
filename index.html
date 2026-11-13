@@ -32,7 +32,7 @@
   .av18{width:18px;height:18px;font-size:8px;border:1.5px solid #fff;margin-left:-5px}
   .pill{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
   .pill.g{color:var(--g);background:var(--g2)} .pill.o{color:var(--o);background:var(--o2)}
-  .tag-New{color:#5A3FAE;background:#EEEAFB} .tag-Healthy{color:var(--g);background:var(--g2)} .tag-Good{color:#1F5FA8;background:#E6EEF9}
+  .tag-New{color:#5A3FAE;background:#EEEAFB} .tag-Healthy{color:var(--g);background:var(--g2)} .tag-Good{color:#1F5FA8;background:#E6EEF9} .tag-In{color:#7A5A00;background:#FFF3C9} .tag-Never{color:#A3305E;background:#FBEFF4}
   .budget{font-size:12px;font-weight:600;color:var(--g);background:var(--g2);padding:4px 8px;border-radius:999px;white-space:nowrap}
   .banner{border-radius:12px;padding:8px 12px;font-size:13px;background:var(--o2);color:#7a3a14}
   .banner.g{background:var(--g2);color:#14513A}
@@ -59,6 +59,10 @@
   .pick-side{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
   .like{min-width:44px;min-height:30px;display:flex;align-items:center;justify-content:center;gap:4px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;padding:0 8px;cursor:pointer}
   .like[aria-pressed=true]{background:var(--g2);border-color:var(--g)}
+  .like.down[aria-pressed=true]{background:#FBE6E3;border-color:#A1301F}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .seg button{min-height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 4px}
+  .seg button[aria-pressed=true]{background:var(--g);border-color:var(--g);color:#fff}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   .chip{font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:4px}
   .chip button{width:22px;height:22px;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -115,6 +119,7 @@
   const ICON = {
     tick: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
     thumb: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H4V10h3zM7 10l4-7a2 2 0 0 1 3 2l-1 5h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 2H7"/></svg>',
+    thumbDown: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V3h3v11h-3zM17 14l-4 7a2 2 0 0 1-3-2l1-5H5a2 2 0 0 1-2-2l2-7a2 2 0 0 1 2-2h10"/></svg>',
     plus: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
     x: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5B675F" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     cart: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 8H7"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>',
@@ -125,7 +130,7 @@
   };
 
   let plan, data = { votes: [], approval: null }, me = store.get("name", ""), tab = "week", sheet = null;
-  let mine = { picks: {}, extras: [] };            // my current vote
+  let mine = { picks: {}, extras: [], tried: {} };            // my current vote
   let pam = null;                                  // Pam's draft decisions
   let saveTimer = null, saving = false;
 
@@ -150,6 +155,9 @@
   const parseNote = s => { try { const o = JSON.parse(s || "{}"); return o && typeof o === "object" ? o : {}; } catch { return s ? { text: String(s) } : {}; } };
   const voteOf = name => data.votes.find(v => v.name.toLowerCase() === String(name).toLowerCase());
   const extrasOf = v => { const o = parseNote(v && v.comment); return Array.isArray(o.x) ? o.x : []; };
+  const triedOf = v => { const o = parseNote(v && v.comment); return o.t && typeof o.t === "object" ? o.t : {}; };
+  const TRIED = [["keep", "Every week"], ["some", "Now and then"], ["no", "Not again"]];
+  function triedTally(id) { const t = { keep: [], some: [], no: [] }; for (const v of data.votes) { const r = triedOf(v)[id]; if (t[r]) t[r].push(v.name); } return t; }
 
   // ---------- helpers ----------
   const person = name => (plan.family || []).find(p => p.name.toLowerCase() === String(name).toLowerCase()) || { name, initials: String(name).slice(0, 2), color: "#5B675F" };
@@ -164,6 +172,8 @@
     return t;
   }
   function likesFor(id) { return data.votes.filter(v => v.picks && v.picks["l_" + id] === "A").map(v => v.name); }
+  function dislikesFor(id) { return data.votes.filter(v => v.picks && v.picks["l_" + id] === "B").map(v => v.name); }
+  const netScore = id => likesFor(id).length - dislikesFor(id).length;
   function allExtras() {
     const m = new Map();
     for (const v of data.votes) for (const x of extrasOf(v)) { const k = x.toLowerCase(); if (!m.has(k)) m.set(k, { name: x, by: [] }); m.get(k).by.push(v.name); }
@@ -178,7 +188,7 @@
       const opt = k => (p.options.find(o => o.key === k) || {}).price || 0;
       t += a === 0 && b === 0 ? Math.max(opt("A"), opt("B")) : a >= b ? opt("A") : opt("B");
     }
-    for (const p of allPicks()) if (likesFor(p.id).length >= 2) t += +p.price || 0;
+    for (const p of allPicks()) if (netScore(p.id) >= 2) t += +p.price || 0;
     return t;
   }
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1600); }
@@ -192,11 +202,12 @@
     saveTimer = null;
     if (!me) return;
     saving = true;
-    const comment = JSON.stringify({ x: mine.extras.slice(0, 25) }).slice(0, 500);
+    let comment = JSON.stringify({ x: mine.extras.slice(0, 25), t: mine.tried });
+    while (comment.length > 500 && mine.extras.length) { mine.extras.pop(); comment = JSON.stringify({ x: mine.extras, t: mine.tried }); }
     const body = { action: "vote", week: plan.week, name: me, picks: mine.picks, comment };
     // optimistic local update
     data.votes = data.votes.filter(v => v.name.toLowerCase() !== me.toLowerCase());
-    if (Object.keys(mine.picks).length || mine.extras.length) data.votes.push({ ts: new Date().toISOString(), name: me, picks: { ...mine.picks }, comment });
+    if (Object.keys(mine.picks).length || mine.extras.length || Object.keys(mine.tried).length) data.votes.push({ ts: new Date().toISOString(), name: me, picks: { ...mine.picks }, comment });
     render();
     try { const r = await api("POST", body); if (!r.ok) throw new Error(r.error || "Not saved"); toast("Saved"); }
     catch (e) { toast("Not saved, check your signal"); }
@@ -204,7 +215,7 @@
   }
   function loadMine() {
     const v = voteOf(me);
-    mine = { picks: v ? { ...(v.picks || {}) } : {}, extras: v ? extrasOf(v) : [] };
+    mine = { picks: v ? { ...(v.picks || {}) } : {}, extras: v ? extrasOf(v) : [], tried: v ? { ...triedOf(v) } : {} };
   }
 
   // ---------- views ----------
@@ -242,17 +253,36 @@
 
   function pickRows(list, kind) {
     return list.map(p => {
-      const likes = likesFor(p.id), liked = mine.picks["l_" + p.id] === "A";
+      const likes = likesFor(p.id), dis = dislikesFor(p.id), my = mine.picks["l_" + p.id];
       const badge = kind === "value" ? `<span class="pill o">${esc(p.deal || money(p.price))}</span>` : `<span class="pill tag-${esc(String(p.tag || "").split(" ")[0])}">${esc(p.tag || "")}</span>`;
-      return `<div class="pick"><div style="display:flex;flex-direction:column;gap:2px;flex-grow:1;min-width:0">
-          <span class="pick-name">${esc(p.name)}${kind === "you" && p.price ? ` <span class="muted" style="font-weight:500">· ${money(p.price)}</span>` : ""}</span>
-          <span class="sm muted">${esc(p.why || "")}</span>
-          ${likes.length ? `<span class="faces" style="margin-top:2px">${likes.map(n => face(n)).join("")}</span>` : ""}
+      const faded = dis.length > likes.length && dis.length >= 2;
+      return `<div class="pick" style="${faded ? "opacity:.55" : ""}"><div style="display:flex;flex-direction:column;gap:3px;flex-grow:1;min-width:0">
+          <span class="pick-name">${esc(p.name)}${p.price ? ` <span class="muted" style="font-weight:500">· ${money(p.price)}</span>` : ""}</span>
+          ${p.value ? `<span class="sm" style="color:var(--g);font-weight:600">${esc(p.value)}</span>` : ""}
+          <span class="sm muted" style="line-height:1.4">${esc(p.why || "")}</span>
+          ${likes.length || dis.length ? `<span class="row xs muted" style="gap:6px;margin-top:2px">${likes.length ? `<span class="faces">${likes.map(n => face(n)).join("")}</span>` : ""}${dis.length ? `<span>not for ${esc(dis.join(", "))}</span>` : ""}</span>` : ""}
         </div>
         <div class="pick-side">${badge}
-          <button class="like" aria-pressed="${liked}" aria-label="Like ${esc(p.name)}" data-act="like" data-id="${esc(p.id)}" ${approved() ? "disabled" : ""}>${ICON.thumb}${likes.length}</button>
+          <div class="row" style="gap:4px">
+            <button class="like" aria-pressed="${my === "A"}" aria-label="Thumbs up ${esc(p.name)}" data-act="like" data-v="A" data-id="${esc(p.id)}" ${approved() ? "disabled" : ""}>${ICON.thumb}${likes.length}</button>
+            <button class="like down" aria-pressed="${my === "B"}" aria-label="Thumbs down ${esc(p.name)}" data-act="like" data-v="B" data-id="${esc(p.id)}" ${approved() ? "disabled" : ""}>${ICON.thumbDown}${dis.length}</button>
+          </div>
         </div></div>`;
     }).join("");
+  }
+
+  function triedCard(mode) {
+    const items = plan.tried || [];
+    if (!items.length) return "";
+    return `<div class="between sec-h"><h2>Tried it? Keep it?</h2><span class="xs muted">New things from recent shops</span></div>
+      <section class="card">${items.map(it => {
+        const tl = triedTally(it.id), cur = mode === "pam" ? (pam.tried[it.id] || "") : (mine.tried[it.id] || "");
+        return `<div class="pick" style="flex-direction:column;align-items:stretch;gap:6px">
+          <div><span class="pick-name">${esc(it.name)}</span>${it.when ? ` <span class="sm muted">· ${esc(it.when)}</span>` : ""}</div>
+          ${it.note ? `<span class="sm muted">${esc(it.note)}</span>` : ""}
+          <div class="seg" role="group" aria-label="${esc(it.name)}">${TRIED.map(([k, label]) => `<button aria-pressed="${cur === k}" data-act="${mode === "pam" ? "pamTried" : "tried"}" data-id="${esc(it.id)}" data-v="${k}" ${approved() ? "disabled" : ""}>${label}${tl[k].length ? `<span class="faces" style="margin-left:4px">${tl[k].map(n => face(n)).join("")}</span>` : ""}</button>`).join("")}</div>
+        </div>`;
+      }).join("")}</section>`;
   }
 
   function extrasCard(mode) {
@@ -274,10 +304,12 @@
     const appr = data.approval;
     return `${header()}
       ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
-      ${appr ? `<div class="banner g"><b>Pam approved the shop.</b> Claude will fill the Ocado trolley and book a weekend slot.</div>` : ""}
+      ${appr ? `<div class="banner g"><b>Pam approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot.</div>` : ""}
+      ${!appr && isPam() ? `<div class="banner g">Once the votes are in, tap <b>Sign off</b> below${plan.approveBy ? " by " + esc(plan.approveBy) : ""}.</div>` : ""}
       ${pollsCard("vote")}
-      ${(plan.goodValue || []).length ? `<div class="between sec-h"><h2>Good value this week</h2><span class="xs muted">On offer at Ocado</span></div><section class="card">${pickRows(plan.goodValue, "value")}</section>` : ""}
-      ${(plan.forYou || []).length ? `<div class="between sec-h"><h2>Picked for you</h2><span class="xs muted">New, healthy, or a good fit</span></div><section class="card">${pickRows(plan.forYou, "you")}</section>` : ""}
+      ${(plan.goodValue || []).length ? `<div class="between sec-h"><h2>Good value this week</h2><span class="xs muted">Compared with what you usually pay</span></div><section class="card">${pickRows(plan.goodValue, "value")}</section>` : ""}
+      ${(plan.forYou || []).length ? `<div class="between sec-h"><h2>Picked for you</h2><span class="xs muted">New, in season, or never tried</span></div><section class="card">${pickRows(plan.forYou, "you")}</section>` : ""}
+      ${triedCard("vote")}
       ${extrasCard("vote")}
       ${regularsCard()}`;
   }
@@ -287,8 +319,10 @@
     const decisions = {};
     for (const p of plan.polls || []) { const t = tally(p.id), a = t.A.length, b = t.B.length; decisions[p.id] = a === 0 && b === 0 ? "A" : b > a ? "B" : "A"; }
     const chosen = {};
-    for (const p of allPicks()) chosen[p.id] = likesFor(p.id).length >= 2;
-    pam = { decisions, chosen, extras: allExtras().map(x => x.name) };
+    for (const p of allPicks()) chosen[p.id] = netScore(p.id) >= 2;
+    const tried = {};
+    for (const it of plan.tried || []) { const t = triedTally(it.id); const best = ["keep", "some", "no"].sort((a, b) => t[b].length - t[a].length)[0]; if (t[best].length) tried[it.id] = best; }
+    pam = { decisions, chosen, extras: allExtras().map(x => x.name), tried };
   }
   function pamTotal() {
     let t = regularsTotal();
@@ -302,7 +336,8 @@
       return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying.</div>
         <section class="card pad">${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
         ${allPicks().filter(p => d["p_" + p.id] === "A").map(p => `<div class="list-row"><span>${esc(p.name)}</span><span class="muted">${money(p.price)}</span></div>`).join("")}
-        ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}</section>`;
+        ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}
+        ${(plan.tried || []).filter(it => note.t && note.t[it.id]).map(it => `<div class="list-row"><span>${esc(it.name)}</span><span class="muted">${esc((TRIED.find(t => t[0] === note.t[it.id]) || [])[1] || "")}</span></div>`).join("")}</section>`;
     }
     initPam();
     const total = pamTotal(), diff = (plan.budget || 0) - total;
@@ -312,8 +347,9 @@
       <section class="card"><h2 style="font-size:14px;margin:10px 0 2px">Good value and picked for you</h2>
         ${allPicks().map(p => `<label class="qa-row"><input type="checkbox" data-act="pamPick" data-id="${esc(p.id)}" ${pam.chosen[p.id] ? "checked" : ""}>
           <span style="flex-grow:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)} <span class="sm muted">${esc(p.deal || money(p.price))}</span></span>
-          <span class="row" style="gap:3px;font-size:12px;font-weight:600;color:var(--muted)">${ICON.thumb}${likesFor(p.id).length}</span></label>`).join("")}
+          <span class="row" style="gap:3px;font-size:12px;font-weight:600;color:var(--muted)">${ICON.thumb}${likesFor(p.id).length} ${ICON.thumbDown}${dislikesFor(p.id).length}</span></label>`).join("")}
       </section>
+      ${triedCard("pam")}
       ${extrasCard("pam")}
       <section class="dark">
         <div class="between"><span style="color:#C9D4CD;font-size:14px">Total, plus extras</span><span style="font-size:20px;font-weight:700">${money(total)} <span style="font-size:12px;font-weight:500;color:${diff >= 0 ? "#9DD3B4" : "#F2B8A6"}">${diff >= 0 ? money(diff) + " under" : money(-diff) + " over"} budget</span></span></div>
@@ -331,7 +367,7 @@
     return `<header style="display:flex;flex-direction:column;gap:2px"><h1>It's been a while</h1><span class="sm muted">When we last had our usual dinners</span></header>
       <section class="card">${lh.map(m => { const w = m.weeks || 0, hi = w >= 4; return `<div class="lh"><span style="font-size:14px;font-weight:600;width:120px;flex-shrink:0">${esc(m.name)}</span>
         <span class="bar" style="flex-grow:1;height:6px"><i style="height:6px;width:${Math.round(w / max * 100)}%;background:${hi ? "#B5521B" : "#9DB8A8"}"></i></span>
-        <span style="font-size:13px;width:66px;text-align:right;flex-shrink:0;color:${hi ? "var(--o)" : "var(--muted)"};font-weight:${hi ? 700 : 500}">${w === 1 ? "1 wk ago" : w + " wks ago"}</span></div>`; }).join("")}</section>
+        <span style="font-size:13px;width:66px;text-align:right;flex-shrink:0;color:${hi ? "var(--o)" : "var(--muted)"};font-weight:${hi ? 700 : 500}">${w === 0 ? "this week" : w === 1 ? "1 wk ago" : w + " wks ago"}</span></div>`; }).join("")}</section>
       ${shops.length ? `<details class="card"><summary><span><b>Past shops</b> <span class="muted">· last ${shops.length}, average ${money(Math.round(avg))}</span></span>${ICON.chev}</summary>
         <div style="margin-top:8px">${shops.map(s => `<div class="list-row"><span>${esc(s.date)}</span><b>${money(s.total)}</b></div>`).join("")}</div></details>` : ""}`;
   }
@@ -402,9 +438,19 @@
       queueSave(); return;
     }
     if (act === "like") {
-      const key = "l_" + el.dataset.id;
-      if (mine.picks[key] === "A") delete mine.picks[key]; else mine.picks[key] = "A";
+      const key = "l_" + el.dataset.id, v = el.dataset.v || "A";
+      if (mine.picks[key] === v) delete mine.picks[key]; else mine.picks[key] = v;
       queueSave(); return;
+    }
+    if (act === "tried") {
+      const id = el.dataset.id, v = el.dataset.v;
+      if (mine.tried[id] === v) delete mine.tried[id]; else mine.tried[id] = v;
+      queueSave(); return;
+    }
+    if (act === "pamTried") {
+      const id = el.dataset.id, v = el.dataset.v;
+      if (pam.tried[id] === v) delete pam.tried[id]; else pam.tried[id] = v;
+      render(); return;
     }
     if (act === "quick") { sheet = { q: "" }; render(); return; }
     if (act === "doneQuick") {
@@ -425,7 +471,7 @@
       for (const p of allPicks()) if (pam.chosen[p.id]) decisions["p_" + p.id] = "A";
       el.disabled = true; el.textContent = "Approving…";
       try {
-        const r = await api("POST", { action: "approve", week: plan.week, pin, decisions, note: JSON.stringify({ x: pam.extras }).slice(0, 500) });
+        const r = await api("POST", { action: "approve", week: plan.week, pin, decisions, note: JSON.stringify({ x: pam.extras.slice(0, 20), t: pam.tried }).slice(0, 500) });
         if (!r.ok) throw new Error(r.error || "Couldn't approve");
         await refresh(); toast("Shop approved"); window.scrollTo(0, 0);
       } catch (err) { msg.textContent = err.message; el.disabled = false; el.textContent = "Approve shop"; }
