@@ -8,6 +8,11 @@ A small phone app for the family to vote on the weekly Ocado shop. Pam approves 
 3. Pam reviews everyone's picks and approves with her PIN.
 4. Claude reads the approval from the Google Sheet, fills the Ocado trolley and books a weekend slot. Jas confirms the checkout.
 
+## plan.json (version 2)
+Written by Claude each Wednesday. Keys: week (delivery Sunday, YYYY-MM-DD), title, preview (true = practice, never ordered), voteBy, budget, note, family [{name, initials, color}], approver, polls [{id, question, options [{key A/B, label, detail, price, deal?, lastHad}]}], goodValue [{id, name, deal, price, why}], forYou [{id, name, price, tag New|Healthy|Good fit, why}], quickAdd [{name, last}], regulars [[name, qty, price]], lastHad [{name, weeks}], pastShops [{date, total}].
+
+Votes in the sheet: picks {pollId: A|B|both, "l_<pickId>": "A" for a like}, comment = JSON {x: [extras]}. Pam's approval: decisions {pollId: A|B|both|none, "p_<pickId>": "A" for picks she added}, note = JSON {x: [extras]}.
+
 ## Files
 - `index.html` — the app
 - `plan.json` — this week's plan, written by Claude

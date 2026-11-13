@@ -1,264 +1,68 @@
 {
+  "version": 2,
   "week": "2026-11-15",
-  "title": "Practice week – try it out!",
-  "status": "draft",
+  "title": "Practice week",
   "preview": true,
-  "delivery": "Practice only – this week's shop is already ordered",
+  "voteBy": "Tue 17 Nov, 6pm",
   "budget": 122,
-  "voteBy": "Fri 13 Nov, 6pm",
-  "note": "This is a practice run so everyone can try the app. Nothing will be ordered from it. The first real plan arrives Wed 18 Nov at 7pm.",
-  "choices": [
-    {
-      "id": "main1",
-      "question": "Midweek dinner",
-      "options": [
-        {
-          "key": "A",
-          "label": "Lamb rump steaks",
-          "detail": "Ocado 4 lamb rump steaks",
-          "price": 8.35,
-          "offer": ""
-        },
-        {
-          "key": "B",
-          "label": "Chicken thighs",
-          "detail": "M&S Oakham Gold chicken thigh fillets",
-          "price": 10.0,
-          "offer": ""
-        }
-      ]
-    },
-    {
-      "id": "fish",
-      "question": "Fish night",
-      "options": [
-        {
-          "key": "A",
-          "label": "Salmon",
-          "detail": "Mowi Scottish salmon fillets x2",
-          "price": 10.0,
-          "offer": "2 for £10"
-        },
-        {
-          "key": "B",
-          "label": "Sea bream",
-          "detail": "Fish Said Fred big sea bream fillets",
-          "price": 4.0,
-          "offer": ""
-        }
-      ]
-    },
-    {
-      "id": "treat",
-      "question": "Friday night treat",
-      "options": [
-        {
-          "key": "A",
-          "label": "Pizza night",
-          "detail": "Pizza Express American",
-          "price": 5.5,
-          "offer": ""
-        },
-        {
-          "key": "B",
-          "label": "Fajita night",
-          "detail": "M&S fajita chicken + wraps",
-          "price": 6.5,
-          "offer": ""
-        }
-      ]
-    }
+  "note": "Practice run: try voting, liking and quick add. Nothing gets ordered. The first real shop arrives Wed 18 Nov.",
+  "family": [
+    { "name": "Pam", "initials": "P", "color": "#1E6B47" },
+    { "name": "Jas", "initials": "J", "color": "#1F5FA8" },
+    { "name": "Rajan", "initials": "Ra", "color": "#B5521B" },
+    { "name": "Ria", "initials": "Ri", "color": "#6B4FBF" }
   ],
-  "basket": [
-    {
-      "cat": "Fruit & veg",
-      "items": [
-        [
-          "Bananas",
-          1,
-          0.95
-        ],
-        [
-          "Mixed seedless grapes",
-          1,
-          2.2
-        ],
-        [
-          "Hass avocados",
-          1,
-          2.0
-        ],
-        [
-          "Braeburn apples",
-          1,
-          1.9
-        ],
-        [
-          "Easy peelers",
-          1,
-          2.0
-        ],
-        [
-          "Blueberries",
-          1,
-          2.5
-        ],
-        [
-          "Tomatoes",
-          1,
-          1.0
-        ],
-        [
-          "Cucumber",
-          1,
-          0.99
-        ],
-        [
-          "Red peppers",
-          1,
-          2.1
-        ],
-        [
-          "Baby spinach",
-          1,
-          1.0
-        ],
-        [
-          "Tenderstem broccoli",
-          1,
-          2.4
-        ],
-        [
-          "Fine beans",
-          1,
-          2.3
-        ],
-        [
-          "White potatoes",
-          1,
-          0.85
-        ],
-        [
-          "Brown onions",
-          1,
-          1.05
-        ]
-      ]
-    },
-    {
-      "cat": "Dairy & eggs",
-      "items": [
-        [
-          "Organic semi-skimmed milk 4 pints",
-          2,
-          5.3
-        ],
-        [
-          "Free range eggs",
-          1,
-          2.95
-        ],
-        [
-          "Skyr natural yoghurt",
-          2,
-          5.5
-        ],
-        [
-          "Yeo Valley natural yoghurt",
-          1,
-          2.0
-        ],
-        [
-          "Kerrygold butter",
-          1,
-          2.65
-        ],
-        [
-          "Cathedral City cheddar",
-          1,
-          3.5
-        ]
-      ]
-    },
-    {
-      "cat": "Bakery",
-      "items": [
-        [
-          "Hovis Best of Both",
-          1,
-          1.1
-        ],
-        [
-          "Jason's sourdough ciabattin",
-          1,
-          1.9
-        ],
-        [
-          "Tortilla wraps",
-          1,
-          1.5
-        ]
-      ]
-    },
-    {
-      "cat": "Meals & extras",
-      "items": [
-        [
-          "Pork loin medallions",
-          1,
-          4.5
-        ],
-        [
-          "Gnocchi",
-          1,
-          2.5
-        ],
-        [
-          "Chestnut mushrooms",
-          1,
-          1.1
-        ],
-        [
-          "BOL lentil soup",
-          2,
-          5.0
-        ],
-        [
-          "Garden peas (frozen)",
-          1,
-          4.05
-        ],
-        [
-          "Chicken breast slices",
-          1,
-          3.8
-        ]
-      ]
-    },
-    {
-      "cat": "Snacks & treats",
-      "items": [
-        [
-          "Penn State pretzels",
-          1,
-          2.25
-        ],
-        [
-          "Nairn's choc chip oat biscuits",
-          1,
-          1.75
-        ],
-        [
-          "Green & Black's 85%",
-          1,
-          3.25
-        ],
-        [
-          "Freddo multipack",
-          1,
-          1.4
-        ]
-      ]
-    }
+  "approver": "Pam",
+  "polls": [
+    { "id": "main1", "question": "Midweek dinner", "options": [
+      { "key": "A", "label": "Lamb", "detail": "2 packs of 4 rump steaks", "price": 16.70, "lastHad": "1 wk ago" },
+      { "key": "B", "label": "Chicken thighs", "detail": "1kg, as a traybake", "price": 10.00, "lastHad": "5 wks ago" } ] },
+    { "id": "fish", "question": "Fish night", "options": [
+      { "key": "A", "label": "Salmon", "detail": "Mowi fillets x2", "price": 10.00, "deal": "2 for £10", "lastHad": "2 wks ago" },
+      { "key": "B", "label": "Prawn stir-fry", "detail": "Jumbo prawns + noodles", "price": 10.50, "lastHad": "1 wk ago" } ] },
+    { "id": "treat", "question": "Friday treat", "options": [
+      { "key": "A", "label": "Pizza night", "detail": "Pizza Express American x2", "price": 11.00, "lastHad": "3 wks ago" },
+      { "key": "B", "label": "Fajitas", "detail": "Chicken, wraps, salsa, sour cream", "price": 12.50, "lastHad": "6 wks ago" } ] }
+  ],
+  "goodValue": [
+    { "id": "pork", "name": "Packington free-range pork medallions", "deal": "2 for £10", "price": 10.00, "why": "Free-range version of last week's pork" },
+    { "id": "prawns", "name": "Tiger Delight jumbo king prawns", "deal": "£4.50, was £5", "price": 4.50, "why": "Freezer stock-up while they're cheaper" },
+    { "id": "cranb", "name": "Stokes cranberry sauce", "deal": "£3, was £3.90", "price": 3.00, "why": "Cheaper now than in December" }
+  ],
+  "forYou": [
+    { "id": "gnocchi", "name": "Sunny & Luna pumpkin gnocchi", "price": 4.95, "tag": "New", "why": "New at Ocado, and the gnocchi went down well" },
+    { "id": "clem", "name": "Clementines 600g", "price": 2.50, "tag": "Healthy", "why": "In season now. You get through easy peelers every week" },
+    { "id": "chipotle", "name": "Gran Luchito smoky chipotle paste", "price": 2.75, "tag": "Good fit", "why": "You already buy Gran Luchito tacos" },
+    { "id": "kimchi", "name": "Kimchi", "price": 3.00, "tag": "Healthy", "why": "Good for gut health, great in rice bowls" }
+  ],
+  "quickAdd": [
+    { "name": "Heinz ketchup", "last": "7 wks ago" },
+    { "name": "Hellmann's mayonnaise", "last": "9 wks ago" },
+    { "name": "Bisto gravy granules", "last": "10 wks ago" },
+    { "name": "Heinz no added sugar baked beans", "last": "4 wks ago" },
+    { "name": "Warburtons crumpet thins", "last": "5 wks ago" },
+    { "name": "Ocado grated Parmigiano", "last": "6 wks ago" },
+    { "name": "Pukka lemon, ginger & manuka tea", "last": "8 wks ago" },
+    { "name": "Tate & Lyle granulated sugar", "last": "11 wks ago" },
+    { "name": "Aunt Bessie's Yorkshire puddings", "last": "12 wks ago" },
+    { "name": "Cirio black beans", "last": "14 wks ago" }
+  ],
+  "regulars": [
+    ["Organic semi-skimmed milk 4 pints", 2, 5.30], ["Free range eggs", 1, 2.95], ["Cathedral City cheddar", 1, 3.50],
+    ["Kerrygold butter", 1, 2.65], ["Skyr yoghurt", 2, 5.50], ["Yeo Valley yoghurt", 1, 2.00], ["Bananas", 1, 0.95],
+    ["Grapes", 1, 2.20], ["Avocados", 1, 2.00], ["Braeburn apples", 1, 1.90], ["Easy peelers", 1, 2.00],
+    ["Tomatoes", 1, 1.00], ["Cucumber", 1, 0.99], ["Red peppers", 1, 2.10], ["Baby spinach", 1, 1.00],
+    ["Tenderstem broccoli", 1, 2.40], ["Fine beans", 1, 2.30], ["Potatoes", 1, 0.85], ["Onions", 1, 1.05],
+    ["Hovis Best of Both", 1, 1.10], ["Jason's sourdough", 1, 1.90], ["Tortilla wraps", 1, 1.50],
+    ["Garden peas (frozen)", 1, 4.05], ["Green & Black's 85%", 1, 3.25]
+  ],
+  "lastHad": [
+    { "name": "Fajitas", "weeks": 6 }, { "name": "Chicken thighs", "weeks": 5 }, { "name": "Beef mince", "weeks": 5 },
+    { "name": "Pizza night", "weeks": 3 }, { "name": "Sea bream", "weeks": 2 }, { "name": "Salmon", "weeks": 2 },
+    { "name": "Roast dinner", "weeks": 1 }, { "name": "Lamb", "weeks": 1 }, { "name": "Prawns", "weeks": 1 }
+  ],
+  "pastShops": [
+    { "date": "Sun 15 Nov", "total": 121.53 }, { "date": "Sat 7 Nov", "total": 140.25 },
+    { "date": "Sat 31 Oct", "total": 144.69 }, { "date": "Sun 11 Oct", "total": 100.14 }, { "date": "Sun 4 Oct", "total": 78.59 }
   ]
 }

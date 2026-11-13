@@ -3,96 +3,101 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#2f5d50">
+<meta name="theme-color" content="#1E6B47">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Weekly Shop">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600;700&display=swap">
 <title>Deol Weekly Shop</title>
 <style>
-  :root{
-    --bg:#f6f3ec; --card:#fffdf8; --ink:#1f2a26; --muted:#6b736f; --line:#e6e0d3;
-    --brand:#2f5d50; --brand-soft:#e3ece8; --accent:#d9822b; --accent-soft:#fbeedd;
-    --ok:#2e7d4f; --err:#b3402a; --r:16px;
-  }
+  :root{--bg:#F3F5F1;--card:#fff;--ink:#15201A;--muted:#5B675F;--line:#E2E7E1;--sep:#EEF1ED;--g:#1E6B47;--g2:#E3F0E8;--o:#A0461A;--o2:#FCEBDD;--r:14px}
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    -webkit-text-size-adjust:100%}
-  .wrap{max-width:560px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
-  header{padding:8px 4px 4px}
-  .eyebrow{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);font-weight:700}
-  h1{font-size:28px;line-height:1.15;margin:4px 0 6px;font-weight:800;letter-spacing:-.01em}
-  .meta{color:var(--muted);font-size:15px}
-  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:600}
-  .pill.draft{background:var(--accent-soft);color:#8a4b10}
-  .pill.approved{background:#dff1e6;color:var(--ok)}
-  .banner{margin:12px 0;padding:10px 12px;border-radius:12px;background:var(--accent-soft);color:#7a4510;font-size:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:14px 0}
-  .card h2{font-size:18px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 12px}
-  .stats{display:flex;gap:10px}
-  .stat{flex:1;background:var(--brand-soft);border-radius:12px;padding:10px 12px}
-  .stat b{display:block;font-size:20px}
-  .stat span{font-size:13px;color:var(--muted)}
-  label.name{display:block;font-weight:600;margin-bottom:6px}
-  input[type=text],input[type=password],textarea{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line);
-    border-radius:12px;background:#fff;color:var(--ink)}
-  textarea{min-height:84px;resize:vertical}
-  input:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
-  .namechips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;color:var(--ink)}
-  .choice{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
-  .choice:first-of-type{border-top:0;margin-top:0;padding-top:0}
-  .q{font-weight:700;margin-bottom:10px}
-  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .opt{position:relative;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;
-    font:inherit;color:var(--ink);min-height:96px;cursor:pointer;transition:border-color .15s,background .15s}
-  .opt .k{font-size:12px;font-weight:800;color:var(--brand);letter-spacing:.05em}
-  .opt .l{display:block;font-weight:700;margin:2px 0}
-  .opt .d{display:block;font-size:13px;color:var(--muted)}
-  .opt .p{display:block;font-size:14px;margin-top:6px;font-weight:600}
-  .offer{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:#8a4b10;background:var(--accent-soft);padding:2px 8px;border-radius:999px}
-  .opt[aria-pressed=true]{border-color:var(--brand);background:var(--brand-soft)}
-  .opt[aria-pressed=true]::after{content:"✓";position:absolute;top:8px;right:10px;font-weight:800;color:var(--brand)}
-  .extra{display:flex;gap:8px;margin-top:8px}
-  .mini{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer}
-  .mini[aria-pressed=true]{border-color:var(--brand);background:var(--brand-soft);font-weight:700}
-  .tally{font-size:13px;color:var(--muted);margin-top:8px}
-  .tally b{color:var(--ink)}
-  details.cat{border-top:1px solid var(--line);padding:10px 0}
-  details.cat:first-of-type{border-top:0}
-  details.cat summary{cursor:pointer;font-weight:700;display:flex;justify-content:space-between;list-style:none}
-  details.cat summary::-webkit-details-marker{display:none}
-  details.cat summary::after{content:"＋";color:var(--muted)}
-  details.cat[open] summary::after{content:"－"}
-  ul.items{list-style:none;padding:0;margin:8px 0 0}
-  ul.items li{display:flex;justify-content:space-between;padding:6px 0;font-size:15px;border-bottom:1px dashed var(--line)}
-  ul.items li:last-child{border-bottom:0}
-  ul.items .q2{color:var(--muted);margin-right:6px}
-  .btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:800;font-size:17px;cursor:pointer}
-  .btn.primary{background:var(--brand);color:#fff}
-  .btn.accent{background:var(--accent);color:#fff}
-  .btn:disabled{opacity:.5;cursor:default}
-  .sticky{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:linear-gradient(to top,var(--bg) 70%,rgba(246,243,236,0))}
-  .sticky .btn{max-width:528px;margin:0 auto}
-  .msg{font-size:14px;margin-top:10px;min-height:1em}
-  .msg.ok{color:var(--ok)} .msg.err{color:var(--err)}
-  .feedback-list{margin:0;padding:0;list-style:none}
-  .feedback-list li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
-  .feedback-list li:last-child{border-bottom:0}
-  .feedback-list b{display:block;font-size:13px;color:var(--muted)}
-  .pam select{width:100%;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;margin:4px 0 10px}
-  .pam .row{margin-bottom:6px}
-  .loading{color:var(--muted);text-align:center;padding:40px 0}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 Inter,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+  button,input,textarea{font:inherit;color:inherit}
+  a{color:var(--g)}
+  .wrap{max-width:520px;margin:0 auto;padding:14px 14px calc(84px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px}
+  h1,.h1{font-family:"Bricolage Grotesque",Inter,sans-serif;font-weight:700;margin:0;font-size:20px;line-height:1.15}
+  h2{margin:0;font-size:15px;font-weight:700}
+  .muted{color:var(--muted)} .sm{font-size:12px} .xs{font-size:11px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:0 12px}
+  .pad{padding:10px 12px}
+  .row{display:flex;align-items:center;gap:10px}
+  .between{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .sec-h{padding:4px 2px 0}
+  .av{border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+  .av34{width:34px;height:34px;font-size:13px}
+  .av18{width:18px;height:18px;font-size:8px;border:1.5px solid #fff;margin-left:-5px}
+  .pill{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+  .pill.g{color:var(--g);background:var(--g2)} .pill.o{color:var(--o);background:var(--o2)}
+  .tag-New{color:#5A3FAE;background:#EEEAFB} .tag-Healthy{color:var(--g);background:var(--g2)} .tag-Good{color:#1F5FA8;background:#E6EEF9}
+  .budget{font-size:12px;font-weight:600;color:var(--g);background:var(--g2);padding:4px 8px;border-radius:999px;white-space:nowrap}
+  .banner{border-radius:12px;padding:8px 12px;font-size:13px;background:var(--o2);color:#7a3a14}
+  .banner.g{background:var(--g2);color:#14513A}
+  /* polls */
+  .poll{padding:8px 0 4px;border-bottom:1px solid var(--sep)} .poll:last-child{border-bottom:0}
+  .opt{width:100%;text-align:left;background:transparent;border:0;padding:6px 0;display:flex;gap:10px;align-items:center;min-height:44px;cursor:pointer}
+  .opt:disabled{cursor:default}
+  .tick{width:20px;height:20px;border-radius:50%;border:2px solid #B7C2BB;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .tick.sq{border-radius:6px;width:22px;height:22px}
+  .on>.tick,.tick.on{border-color:var(--g);background:var(--g)}
+  .tick svg{display:none} .on>.tick svg,.tick.on svg{display:block}
+  .opt-body{display:flex;flex-direction:column;gap:4px;flex-grow:1;min-width:0}
+  .opt-line{display:flex;align-items:baseline;gap:6px}
+  .opt-label{font-size:14px;font-weight:600;white-space:nowrap}
+  .opt-meta{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-grow:1}
+  .faces{display:flex;flex-shrink:0;padding-left:5px}
+  .cnt{font-size:13px;font-weight:700;width:14px;text-align:right;flex-shrink:0}
+  .bar{height:4px;border-radius:999px;background:var(--sep);overflow:hidden}
+  .bar>i{display:block;height:4px;background:#9DB8A8;border-radius:999px;transition:width .25s}
+  .on .bar>i{background:var(--g)}
+  /* picks */
+  .pick{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--sep)} .pick:last-child{border-bottom:0}
+  .pick-name{font-size:14px;font-weight:600;line-height:1.25}
+  .pick-side{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+  .like{min-width:44px;min-height:30px;display:flex;align-items:center;justify-content:center;gap:4px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;padding:0 8px;cursor:pointer}
+  .like[aria-pressed=true]{background:var(--g2);border-color:var(--g)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:4px}
+  .chip button{width:22px;height:22px;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .btn{min-height:32px;display:inline-flex;align-items:center;gap:4px;padding:0 12px;border-radius:999px;background:var(--g);color:#fff;font-size:13px;font-weight:600;border:0;cursor:pointer;text-decoration:none}
+  .btn.big{min-height:48px;border-radius:10px;font-size:16px;font-weight:700;justify-content:center}
+  .btn:disabled{opacity:.5}
+  details.card{padding:10px 12px} details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+  details summary::-webkit-details-marker{display:none}
+  .list-row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--sep);font-size:13px}
+  /* nav */
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(10px + env(safe-area-inset-bottom));z-index:5}
+  nav.tabs .in{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%;max-width:520px}
+  nav.tabs button{background:transparent;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--muted);min-height:44px;cursor:pointer}
+  nav.tabs button[aria-current=page]{color:var(--g);font-weight:700}
+  /* sheet */
+  .scrim{position:fixed;inset:0;background:rgba(21,32,26,.45);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+  .sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;border-radius:20px 20px 0 0;padding:8px 14px calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;overflow:auto}
+  .grab{align-self:center;width:40px;height:4px;border-radius:999px;background:#C9D1CB}
+  .search{width:100%;min-height:42px;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:#fff;font-size:14px}
+  .qa-row{display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid var(--sep);cursor:pointer}
+  .qa-row:last-child{border-bottom:0}
+  .qa-row input{width:20px;height:20px;accent-color:var(--g);flex-shrink:0}
+  textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#F9FAF8;font-size:14px;resize:none}
+  .dark{background:var(--ink);color:#fff;border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:10px}
+  .pin{width:100px;min-height:48px;border:0;border-radius:10px;padding:0 12px;font-size:18px;letter-spacing:.3em;background:#fff;color:var(--ink)}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:13px;padding:8px 14px;border-radius:999px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+  .who-row{display:flex;align-items:center;gap:12px;min-height:60px;border-bottom:1px solid var(--sep);width:100%;background:transparent;border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer;padding:0}
+  .who-row:last-child{border-bottom:0}
+  .lh{display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid var(--sep)} .lh:last-child{border-bottom:0}
+  .loading{text-align:center;padding:60px 0;color:var(--muted)}
+  .sr{position:absolute;left:-9999px}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"><p class="loading">Loading this week's shop…</p></div>
-<div class="sticky" id="stickyBar" hidden><button class="btn primary" id="sendBtn">Send my picks</button></div>
+<nav class="tabs" id="tabs" hidden aria-label="Main"><div class="in" id="tabsIn"></div></nav>
+<div id="sheetHost"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="config.js"></script>
 <script>
@@ -100,15 +105,31 @@
   const API = (window.SHOP_API_URL || "").trim();
   const DEMO = !API;
   const $ = (s, el = document) => el.querySelector(s);
-  const money = n => "£" + Number(n).toFixed(2);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  const money = n => "£" + Number(n || 0).toFixed(2).replace(/\.00$/, "");
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} }
+  };
+  const ICON = {
+    tick: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
+    thumb: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H4V10h3zM7 10l4-7a2 2 0 0 1 3 2l-1 5h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 2H7"/></svg>',
+    plus: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    x: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5B675F" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    cart: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 8H7"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>',
+    clock: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>',
+    check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>',
+    chev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B675F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+    right: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B675F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'
   };
 
-  let plan, state = { votes: [], approval: null }, picks = {};
+  let plan, data = { votes: [], approval: null }, me = store.get("name", ""), tab = "week", sheet = null;
+  let mine = { picks: {}, extras: [] };            // my current vote
+  let pam = null;                                  // Pam's draft decisions
+  let saveTimer = null, saving = false;
 
+  // ---------- backend ----------
   async function api(method, body, week) {
     if (DEMO) {
       const key = "demo:" + (week || body.week);
@@ -121,222 +142,325 @@
         if (body.pin !== "1234") return { ok: false, error: "Wrong PIN (demo PIN is 1234)" };
         db.approval = { ts: new Date().toISOString(), decisions: body.decisions, note: body.note };
       }
-      store.set(key, db);
-      return { ok: true };
+      store.set(key, db); return { ok: true };
     }
-    if (method === "GET") {
-      const r = await fetch(API + "?week=" + encodeURIComponent(week), { cache: "no-store" });
-      return r.json();
-    }
-    const r = await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
-    return r.json();
+    if (method === "GET") return (await fetch(API + "?week=" + encodeURIComponent(week), { cache: "no-store" })).json();
+    return (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })).json();
   }
+  const parseNote = s => { try { const o = JSON.parse(s || "{}"); return o && typeof o === "object" ? o : {}; } catch { return s ? { text: String(s) } : {}; } };
+  const voteOf = name => data.votes.find(v => v.name.toLowerCase() === String(name).toLowerCase());
+  const extrasOf = v => { const o = parseNote(v && v.comment); return Array.isArray(o.x) ? o.x : []; };
 
-  function tallyFor(choiceId) {
-    const t = { A: 0, B: 0, both: 0, none: 0 };
-    for (const v of state.votes) { const p = v.picks && v.picks[choiceId]; if (p && t[p] != null) t[p]++; }
+  // ---------- helpers ----------
+  const person = name => (plan.family || []).find(p => p.name.toLowerCase() === String(name).toLowerCase()) || { name, initials: String(name).slice(0, 2), color: "#5B675F" };
+  const face = (name, cls = "av18") => { const p = person(name); return `<span class="av ${cls}" style="background:${esc(p.color)}" title="${esc(p.name)}">${esc(p.initials)}</span>`; };
+  const isPam = () => me && me.toLowerCase() === String(plan.approver || "Pam").toLowerCase();
+  const approved = () => !!data.approval;
+  const sets = val => val === "both" ? ["A", "B"] : (val === "A" || val === "B") ? [val] : [];
+  const fromSet = s => s.has("A") && s.has("B") ? "both" : s.has("A") ? "A" : s.has("B") ? "B" : null;
+  function tally(pollId) {
+    const t = { A: [], B: [] };
+    for (const v of data.votes) for (const k of sets(v.picks && v.picks[pollId])) t[k].push(v.name);
     return t;
   }
-  function majority(choiceId) {
-    const t = tallyFor(choiceId);
-    const order = ["A", "B", "both", "none"];
-    let best = "A", n = -1;
-    for (const k of order) if (t[k] > n) { best = k; n = t[k]; }
-    return n > 0 ? best : "A";
+  function likesFor(id) { return data.votes.filter(v => v.picks && v.picks["l_" + id] === "A").map(v => v.name); }
+  function allExtras() {
+    const m = new Map();
+    for (const v of data.votes) for (const x of extrasOf(v)) { const k = x.toLowerCase(); if (!m.has(k)) m.set(k, { name: x, by: [] }); m.get(k).by.push(v.name); }
+    return [...m.values()];
   }
-  const pickLabel = (c, k) => k === "both" ? "Both" : k === "none" ? "Neither" : (c.options.find(o => o.key === k) || {}).label || k;
+  const allPicks = () => [...(plan.goodValue || []).map(p => ({ ...p, kind: "value" })), ...(plan.forYou || []).map(p => ({ ...p, kind: "you" }))];
+  const regularsTotal = () => (plan.regulars || []).reduce((s, r) => s + (+r[2] || 0), 0);
+  function estimate() {
+    let t = regularsTotal();
+    for (const p of plan.polls || []) {
+      const tl = tally(p.id), a = tl.A.length, b = tl.B.length;
+      const opt = k => (p.options.find(o => o.key === k) || {}).price || 0;
+      t += a === 0 && b === 0 ? Math.max(opt("A"), opt("B")) : a >= b ? opt("A") : opt("B");
+    }
+    for (const p of allPicks()) if (likesFor(p.id).length >= 2) t += +p.price || 0;
+    return t;
+  }
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1600); }
+
+  // ---------- saving my vote ----------
+  function queueSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 500);
+  }
+  async function saveNow() {
+    saveTimer = null;
+    if (!me) return;
+    saving = true;
+    const comment = JSON.stringify({ x: mine.extras.slice(0, 25) }).slice(0, 500);
+    const body = { action: "vote", week: plan.week, name: me, picks: mine.picks, comment };
+    // optimistic local update
+    data.votes = data.votes.filter(v => v.name.toLowerCase() !== me.toLowerCase());
+    if (Object.keys(mine.picks).length || mine.extras.length) data.votes.push({ ts: new Date().toISOString(), name: me, picks: { ...mine.picks }, comment });
+    render();
+    try { const r = await api("POST", body); if (!r.ok) throw new Error(r.error || "Not saved"); toast("Saved"); }
+    catch (e) { toast("Not saved, check your signal"); }
+    finally { saving = false; }
+  }
+  function loadMine() {
+    const v = voteOf(me);
+    mine = { picks: v ? { ...(v.picks || {}) } : {}, extras: v ? extrasOf(v) : [] };
+  }
+
+  // ---------- views ----------
+  function header() {
+    const p = person(me);
+    const voted = (plan.family || []).filter(f => voteOf(f.name)).length;
+    return `<header class="row">
+      <button class="av av34" style="background:${esc(p.color)};border:0;cursor:pointer" data-act="who" aria-label="You are ${esc(me)}. Change">${esc(p.initials)}</button>
+      <div style="display:flex;flex-direction:column;flex-grow:1;min-width:0">
+        <h1>${esc(plan.title || "This week")}</h1>
+        <span class="sm muted">${approved() ? "Approved by " + esc(plan.approver || "Pam") : "Votes close " + esc(plan.voteBy) + " · " + voted + " of " + (plan.family || []).length + " voted"}</span>
+      </div>
+      <span class="budget">${money(Math.round(estimate()))} / ${money(plan.budget)}</span>
+    </header>`;
+  }
+
+  function pollsCard(mode) {
+    return `<section class="card" style="padding:4px 12px 6px">${mode === "pam" ? `<p class="sm muted" style="margin:6px 0 2px">Tap what goes in. The family favourite is already ticked, and you can tick both.</p>` : ""}
+      ${(plan.polls || []).map(p => {
+        const tl = tally(p.id), total = tl.A.length + tl.B.length;
+        const sel = new Set(mode === "pam" ? sets(pam.decisions[p.id]) : sets(mine.picks[p.id]));
+        return `<div class="poll"><div class="between" style="margin-bottom:2px"><h2 style="font-size:14px">${esc(p.question)}</h2>${mode === "pam" ? "" : `<span class="xs muted">Tap one or both</span>`}</div>
+          ${p.options.map(o => {
+            const voters = tl[o.key] || [], on = sel.has(o.key);
+            const meta = [o.deal || (o.price != null ? money(o.price) : ""), o.lastHad ? "last had " + o.lastHad : ""].filter(Boolean).join(" · ");
+            return `<button class="opt ${on ? "on" : ""}" aria-pressed="${on}" data-act="${mode === "pam" ? "pamPoll" : "vote"}" data-poll="${esc(p.id)}" data-key="${o.key}" ${approved() ? "disabled" : ""}>
+              <span class="tick ${mode === "pam" ? "sq" : ""}">${ICON.tick}</span>
+              <span class="opt-body"><span class="opt-line"><span class="opt-label">${esc(o.label)}</span><span class="opt-meta">${esc(meta)}</span>
+                <span class="faces">${voters.map(n => face(n)).join("")}</span><span class="cnt">${voters.length}</span></span>
+                ${mode === "pam" ? "" : `<span class="bar"><i style="width:${total ? Math.round(voters.length / Math.max(total, 1) * 100) : 0}%"></i></span>`}
+              </span></button>`;
+          }).join("")}</div>`;
+      }).join("")}</section>`;
+  }
+
+  function pickRows(list, kind) {
+    return list.map(p => {
+      const likes = likesFor(p.id), liked = mine.picks["l_" + p.id] === "A";
+      const badge = kind === "value" ? `<span class="pill o">${esc(p.deal || money(p.price))}</span>` : `<span class="pill tag-${esc(String(p.tag || "").split(" ")[0])}">${esc(p.tag || "")}</span>`;
+      return `<div class="pick"><div style="display:flex;flex-direction:column;gap:2px;flex-grow:1;min-width:0">
+          <span class="pick-name">${esc(p.name)}${kind === "you" && p.price ? ` <span class="muted" style="font-weight:500">· ${money(p.price)}</span>` : ""}</span>
+          <span class="sm muted">${esc(p.why || "")}</span>
+          ${likes.length ? `<span class="faces" style="margin-top:2px">${likes.map(n => face(n)).join("")}</span>` : ""}
+        </div>
+        <div class="pick-side">${badge}
+          <button class="like" aria-pressed="${liked}" aria-label="Like ${esc(p.name)}" data-act="like" data-id="${esc(p.id)}" ${approved() ? "disabled" : ""}>${ICON.thumb}${likes.length}</button>
+        </div></div>`;
+    }).join("");
+  }
+
+  function extrasCard(mode) {
+    const ex = mode === "pam" ? pam.extras.map(n => ({ name: n, by: [] })) : allExtras();
+    return `<section class="card pad" style="display:flex;flex-direction:column;gap:8px">
+      <div class="between" style="align-items:center"><h2>Extras</h2>${approved() ? "" : `<button class="btn" data-act="quick">${ICON.plus}Quick add</button>`}</div>
+      ${ex.length ? `<div class="chips">${ex.map(x => `<span class="chip">${esc(x.name)}${mode === "pam" ? `<button aria-label="Remove ${esc(x.name)}" data-act="pamRemoveExtra" data-name="${esc(x.name)}">${ICON.x}</button>` : (x.by.length ? `<span class="faces">${x.by.map(n => face(n)).join("")}</span>` : "")}</span>`).join("")}</div>`
+        : `<span class="sm muted">Running low on something? Add it here.</span>`}
+    </section>`;
+  }
+
+  function regularsCard() {
+    const r = plan.regulars || [];
+    return `<details class="card"><summary><span><b>Regulars</b> <span class="muted">· ${r.length} items, about ${money(Math.round(regularsTotal()))}, always ordered</span></span>${ICON.chev}</summary>
+      <div style="margin-top:8px">${r.map(x => `<div class="list-row"><span>${x[1] > 1 ? x[1] + " × " : ""}${esc(x[0])}</span><span class="muted">${money(x[2])}</span></div>`).join("")}</div></details>`;
+  }
+
+  function weekView() {
+    const appr = data.approval;
+    return `${header()}
+      ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
+      ${appr ? `<div class="banner g"><b>Pam approved the shop.</b> Claude will fill the Ocado trolley and book a weekend slot.</div>` : ""}
+      ${pollsCard("vote")}
+      ${(plan.goodValue || []).length ? `<div class="between sec-h"><h2>Good value this week</h2><span class="xs muted">On offer at Ocado</span></div><section class="card">${pickRows(plan.goodValue, "value")}</section>` : ""}
+      ${(plan.forYou || []).length ? `<div class="between sec-h"><h2>Picked for you</h2><span class="xs muted">New, healthy, or a good fit</span></div><section class="card">${pickRows(plan.forYou, "you")}</section>` : ""}
+      ${extrasCard("vote")}
+      ${regularsCard()}`;
+  }
+
+  function initPam() {
+    if (pam) return;
+    const decisions = {};
+    for (const p of plan.polls || []) { const t = tally(p.id), a = t.A.length, b = t.B.length; decisions[p.id] = a === 0 && b === 0 ? "A" : b > a ? "B" : "A"; }
+    const chosen = {};
+    for (const p of allPicks()) chosen[p.id] = likesFor(p.id).length >= 2;
+    pam = { decisions, chosen, extras: allExtras().map(x => x.name) };
+  }
+  function pamTotal() {
+    let t = regularsTotal();
+    for (const p of plan.polls || []) for (const k of sets(pam.decisions[p.id])) t += (p.options.find(o => o.key === k) || {}).price || 0;
+    for (const p of allPicks()) if (pam.chosen[p.id]) t += +p.price || 0;
+    return t;
+  }
+  function pamView() {
+    if (approved()) {
+      const d = data.approval.decisions || {}, note = parseNote(data.approval.note);
+      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying.</div>
+        <section class="card pad">${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
+        ${allPicks().filter(p => d["p_" + p.id] === "A").map(p => `<div class="list-row"><span>${esc(p.name)}</span><span class="muted">${money(p.price)}</span></div>`).join("")}
+        ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}</section>`;
+    }
+    initPam();
+    const total = pamTotal(), diff = (plan.budget || 0) - total;
+    return `<header class="row">${face(me, "av34")}<div style="display:flex;flex-direction:column;flex-grow:1"><h1>Sign off, ${esc(me)}</h1>
+        <span class="sm muted">${(plan.family || []).filter(f => voteOf(f.name)).length} of ${(plan.family || []).length} voted · ${esc(plan.title)}</span></div></header>
+      ${pollsCard("pam")}
+      <section class="card"><h2 style="font-size:14px;margin:10px 0 2px">Good value and picked for you</h2>
+        ${allPicks().map(p => `<label class="qa-row"><input type="checkbox" data-act="pamPick" data-id="${esc(p.id)}" ${pam.chosen[p.id] ? "checked" : ""}>
+          <span style="flex-grow:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)} <span class="sm muted">${esc(p.deal || money(p.price))}</span></span>
+          <span class="row" style="gap:3px;font-size:12px;font-weight:600;color:var(--muted)">${ICON.thumb}${likesFor(p.id).length}</span></label>`).join("")}
+      </section>
+      ${extrasCard("pam")}
+      <section class="dark">
+        <div class="between"><span style="color:#C9D4CD;font-size:14px">Total, plus extras</span><span style="font-size:20px;font-weight:700">${money(total)} <span style="font-size:12px;font-weight:500;color:${diff >= 0 ? "#9DD3B4" : "#F2B8A6"}">${diff >= 0 ? money(diff) + " under" : money(-diff) + " over"} budget</span></span></div>
+        <div class="row" style="gap:8px"><label for="pin" class="sr">PIN</label><input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
+          <button class="btn big" style="flex-grow:1;background:#2E8B5F" data-act="approve">Approve shop</button></div>
+        <span id="pamMsg" class="sm" style="color:#F2B8A6;min-height:1em"></span>
+        <span class="sm" style="color:#B9C6BE">Claude then fills the Ocado trolley, books a slot and checks with Jas before paying.</span>
+      </section>`;
+  }
+
+  function lastView() {
+    const lh = plan.lastHad || [], max = Math.max(8, ...lh.map(x => x.weeks || 0));
+    const shops = plan.pastShops || [];
+    const avg = shops.length ? shops.reduce((s, x) => s + x.total, 0) / shops.length : 0;
+    return `<header style="display:flex;flex-direction:column;gap:2px"><h1>It's been a while</h1><span class="sm muted">When we last had our usual dinners</span></header>
+      <section class="card">${lh.map(m => { const w = m.weeks || 0, hi = w >= 4; return `<div class="lh"><span style="font-size:14px;font-weight:600;width:120px;flex-shrink:0">${esc(m.name)}</span>
+        <span class="bar" style="flex-grow:1;height:6px"><i style="height:6px;width:${Math.round(w / max * 100)}%;background:${hi ? "#B5521B" : "#9DB8A8"}"></i></span>
+        <span style="font-size:13px;width:66px;text-align:right;flex-shrink:0;color:${hi ? "var(--o)" : "var(--muted)"};font-weight:${hi ? 700 : 500}">${w === 1 ? "1 wk ago" : w + " wks ago"}</span></div>`; }).join("")}</section>
+      ${shops.length ? `<details class="card"><summary><span><b>Past shops</b> <span class="muted">· last ${shops.length}, average ${money(Math.round(avg))}</span></span>${ICON.chev}</summary>
+        <div style="margin-top:8px">${shops.map(s => `<div class="list-row"><span>${esc(s.date)}</span><b>${money(s.total)}</b></div>`).join("")}</div></details>` : ""}`;
+  }
+
+  function whoView() {
+    return `<div style="padding-top:26px;display:flex;flex-direction:column;gap:6px"><span class="xs" style="font-weight:600;color:var(--g);letter-spacing:.06em;text-transform:uppercase">Deol weekly shop</span>
+      <h1 style="font-size:28px">Who's this?</h1><p class="muted" style="margin:0;font-size:14px">Tap your name once and your phone will remember it.</p></div>
+      <section class="card">${(plan.family || []).map(p => `<button class="who-row" data-act="iam" data-name="${esc(p.name)}">${face(p.name, "av34")}
+        <span style="font-size:16px;font-weight:600;flex-grow:1">${esc(p.name)}</span>${p.name === plan.approver ? `<span class="pill g">Final say</span>` : ""}${ICON.right}</button>`).join("")}</section>`;
+  }
+
+  function quickSheet() {
+    const sel = new Set(mine.extras.map(x => x.toLowerCase()));
+    const others = allExtras().filter(x => !sel.has(x.name.toLowerCase()));
+    const q = (sheet.q || "").toLowerCase();
+    const items = (plan.quickAdd || []).filter(i => !q || i.name.toLowerCase().includes(q));
+    const extraMine = mine.extras.filter(x => !(plan.quickAdd || []).some(i => i.name.toLowerCase() === x.toLowerCase()));
+    return `<div class="scrim" data-act="closeQuick"><div class="sheet" role="dialog" aria-label="Quick add" data-stop>
+      <span class="grab"></span>
+      <div class="between" style="align-items:center"><h1>Quick add</h1><button class="btn" data-act="doneQuick">Done${mine.extras.length ? " · " + mine.extras.length + " added" : ""}</button></div>
+      <label class="sr" for="qaSearch">Search things we've bought before</label>
+      <input id="qaSearch" class="search" type="search" placeholder="Search things we've bought before" value="${esc(sheet.q || "")}">
+      <span class="sm muted">From past shops, not in this week's shop</span>
+      <section class="card">${items.map(i => `<label class="qa-row"><input type="checkbox" data-act="qa" data-name="${esc(i.name)}" ${sel.has(i.name.toLowerCase()) ? "checked" : ""}>
+        <span style="font-size:14px;flex-grow:1">${esc(i.name)}</span><span class="sm muted">${esc(i.last || "")}</span></label>`).join("") || `<p class="sm muted" style="padding:10px 0;margin:0">Nothing matches. Type it below instead.</p>`}
+        ${extraMine.map(x => `<label class="qa-row"><input type="checkbox" data-act="qa" data-name="${esc(x)}" checked><span style="font-size:14px;flex-grow:1">${esc(x)}</span><span class="sm muted">typed</span></label>`).join("")}
+      </section>
+      ${others.length ? `<span class="sm muted">Already added by others: ${others.map(o => esc(o.name) + " (" + esc(o.by.join(", ")) + ")").join(", ")}</span>` : ""}
+      <section class="card pad" style="display:flex;flex-direction:column;gap:8px">
+        <label for="qaFree" style="font-size:14px;font-weight:600">Not on the list?</label>
+        <textarea id="qaFree" rows="2" placeholder="Type items with commas between them, e.g. dishwasher tablets, foil"></textarea>
+        <span class="sm muted">Claude finds the closest match on Ocado for each one.</span>
+      </section></div></div>`;
+  }
+
+  function tabsBar() {
+    const t = [["week", "This week", ICON.cart], ["last", "Last had", ICON.clock]];
+    if (isPam()) t.splice(1, 0, ["pam", approved() ? "Approved" : "Sign off", ICON.check]);
+    $("#tabsIn").innerHTML = t.map(([id, label, ic]) => `<button data-act="tab" data-tab="${id}" ${tab === id ? 'aria-current="page"' : ""}>${ic}${label}</button>`).join("");
+  }
 
   function render() {
-    const approved = !!state.approval || plan.status === "approved";
-    const total = plan.basket.reduce((s, c) => s + c.items.reduce((a, i) => a + i[2], 0), 0);
-    const myName = store.get("name", "");
-    const mine = state.votes.find(v => myName && v.name.toLowerCase() === myName.toLowerCase());
-    if (!Object.keys(picks).length && mine) picks = { ...mine.picks };
-    const feedback = state.votes.filter(v => v.comment && v.comment.trim());
-
-    $("#app").innerHTML = `
-      <header>
-        <div class="eyebrow">Deol weekly shop</div>
-        <h1>${esc(plan.title)}</h1>
-        <div class="meta">
-          <span class="pill ${approved ? "approved" : "draft"}">${approved ? "Approved by Pam" : "Waiting for picks"}</span>
-          &nbsp;Vote by ${esc(plan.voteBy)}
-        </div>
-      </header>
-      ${DEMO ? `<div class="banner">Demo mode: picks are saved on this phone only until the shared sheet is connected.</div>` : ""}
-      ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
-
-      <section class="card">
-        <div class="stats">
-          <div class="stat"><b>${money(total)}</b><span>basket before choices</span></div>
-          <div class="stat"><b>${money(plan.budget)}</b><span>weekly budget</span></div>
-        </div>
-        <p class="sub" style="margin:10px 0 0">${esc(plan.delivery)}</p>
-      </section>
-
-      ${approved ? approvedCard() : `
-      <section class="card">
-        <label class="name" for="who">Who's choosing?</label>
-        <input type="text" id="who" placeholder="Your name" autocomplete="given-name" value="${esc(myName)}">
-        <div class="namechips" id="chips"></div>
-      </section>
-
-      <section class="card">
-        <h2>Pick one, or both</h2>
-        <p class="sub">${plan.choices.length} quick choices this week. Tap A or B.</p>
-        ${plan.choices.map(choiceBlock).join("")}
-      </section>
-
-      <section class="card">
-        <h2>Anything else?</h2>
-        <p class="sub">Requests, things we're out of, things you're bored of.</p>
-        <textarea id="comment" placeholder="e.g. more crumpets please, no more peas!">${esc(mine ? mine.comment || "" : "")}</textarea>
-        <div class="msg" id="sendMsg"></div>
-      </section>`}
-
-      ${feedback.length ? `<section class="card"><h2>What everyone said</h2><ul class="feedback-list">
-        ${feedback.map(v => `<li><b>${esc(v.name)}</b>${esc(v.comment)}</li>`).join("")}</ul></section>` : ""}
-
-      <section class="card">
-        <h2>The basket</h2>
-        <p class="sub">Your regulars, plus whatever wins above.</p>
-        ${plan.basket.map(c => `
-          <details class="cat">
-            <summary><span>${esc(c.cat)}</span></summary>
-            <ul class="items">${c.items.map(i => `<li><span><span class="q2">${i[1]}×</span>${esc(i[0])}</span><span>${money(i[2])}</span></li>`).join("")}</ul>
-          </details>`).join("")}
-      </section>
-
-      ${approved ? "" : pamCard()}
-    `;
-
-    $("#stickyBar").hidden = approved;
-    wire();
-  }
-
-  function choiceBlock(c) {
-    const t = tallyFor(c.id);
-    const voters = state.votes.length;
-    return `<div class="choice" data-id="${esc(c.id)}">
-      <div class="q">${esc(c.question)}</div>
-      <div class="opts">${c.options.map(o => `
-        <button class="opt" data-pick="${o.key}" aria-pressed="${picks[c.id] === o.key || picks[c.id] === "both"}">
-          <span class="k">${o.key}</span>
-          <span class="l">${esc(o.label)}</span>
-          <span class="d">${esc(o.detail)}</span>
-          <span class="p">${money(o.price)}</span>
-          ${o.offer ? `<span class="offer">${esc(o.offer)}</span>` : ""}
-        </button>`).join("")}
-      </div>
-      <div class="extra">
-        <button class="mini" data-pick="both" aria-pressed="${picks[c.id] === "both"}">Both</button>
-        <button class="mini" data-pick="none" aria-pressed="${picks[c.id] === "none"}">Neither</button>
-      </div>
-      ${voters ? `<div class="tally">So far: A <b>${t.A}</b> · B <b>${t.B}</b> · Both <b>${t.both}</b> · Neither <b>${t.none}</b></div>` : ""}
-    </div>`;
-  }
-
-  function pamCard() {
-    return `<section class="card pam">
-      <h2>Pam's sign-off</h2>
-      <p class="sub">Pam makes the final call. Choices start on the family favourite.</p>
-      ${plan.choices.map(c => `
-        <div class="row"><label for="dec-${esc(c.id)}"><b>${esc(c.question)}</b></label>
-          <select id="dec-${esc(c.id)}">
-            ${["A", "B", "both", "none"].map(k => `<option value="${k}" ${majority(c.id) === k ? "selected" : ""}>${esc(pickLabel(c, k))}</option>`).join("")}
-          </select></div>`).join("")}
-      <label for="pamNote"><b>Note for the order</b> <span class="sub">(optional)</span></label>
-      <textarea id="pamNote" placeholder="e.g. skip the peas, add a cake for Saturday"></textarea>
-      <label for="pin" style="display:block;margin-top:10px"><b>PIN</b></label>
-      <input type="password" id="pin" inputmode="numeric" autocomplete="off" placeholder="Pam's PIN">
-      <div style="height:12px"></div>
-      <button class="btn accent" id="approveBtn">Approve this shop</button>
-      <div class="msg" id="pamMsg"></div>
-    </section>`;
-  }
-
-  function approvedCard() {
-    const d = (state.approval && state.approval.decisions) || {};
-    return `<section class="card">
-      <h2>Pam approved the shop ✓</h2>
-      <p class="sub">Claude will fill the Ocado trolley and book the slot.</p>
-      <ul class="feedback-list">${plan.choices.map(c => `<li><b>${esc(c.question)}</b>${esc(pickLabel(c, d[c.id] || majority(c.id)))}</li>`).join("")}</ul>
-      ${state.approval && state.approval.note ? `<p class="sub" style="margin-top:10px">Note: ${esc(state.approval.note)}</p>` : ""}
-    </section>`;
-  }
-
-  function wire() {
-    const who = $("#who");
-    if (who) {
-      const known = [...new Set(["Pam", "Jas", "Rajan", "Ria", ...state.votes.map(v => v.name)])].slice(0, 8);
-      $("#chips").innerHTML = known.map(n => `<button class="chip" type="button">${esc(n)}</button>`).join("");
-      $("#chips").addEventListener("click", e => { if (e.target.matches(".chip")) { who.value = e.target.textContent; store.set("name", who.value); } });
-      who.addEventListener("change", () => store.set("name", who.value.trim()));
+    if (!plan) return;
+    const app = $("#app");
+    const y = window.scrollY;
+    if (!me || !person(me) || !(plan.family || []).some(f => f.name.toLowerCase() === me.toLowerCase())) {
+      app.innerHTML = whoView(); $("#tabs").hidden = true; return;
     }
-    document.querySelectorAll(".choice").forEach(el => {
-      el.addEventListener("click", e => {
-        const b = e.target.closest("[data-pick]"); if (!b) return;
-        const id = el.dataset.id, k = b.dataset.pick;
-        picks[id] = picks[id] === k ? undefined : k;
-        if (picks[id] === undefined) delete picks[id];
-        el.querySelectorAll(".opt").forEach(o => o.setAttribute("aria-pressed", String(picks[id] === o.dataset.pick || picks[id] === "both")));
-        el.querySelectorAll(".mini").forEach(o => o.setAttribute("aria-pressed", String(picks[id] === o.dataset.pick)));
-      });
-    });
-    const ab = $("#approveBtn");
-    if (ab) ab.addEventListener("click", approve);
+    $("#tabs").hidden = false; tabsBar();
+    app.innerHTML = tab === "last" ? lastView() : tab === "pam" && isPam() ? pamView() : weekView();
+    window.scrollTo(0, y);
+    $("#sheetHost").innerHTML = sheet ? quickSheet() : "";
+    if (sheet && sheet.focus) { const i = $("#qaSearch"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); sheet.focus = false; }
   }
 
-  async function send() {
-    const msg = $("#sendMsg"), btn = $("#sendBtn");
-    const name = ($("#who")?.value || "").trim();
-    const comment = ($("#comment")?.value || "").trim();
-    if (!name) { msg.className = "msg err"; msg.textContent = "Add your name first so we know who picked what."; $("#who").focus(); return; }
-    if (!Object.keys(picks).length && !comment) { msg.className = "msg err"; msg.textContent = "Tap at least one choice or leave a comment."; return; }
-    store.set("name", name);
-    btn.disabled = true; btn.textContent = "Sending…";
-    try {
-      const r = await api("POST", { action: "vote", week: plan.week, name, picks, comment });
-      if (!r.ok) throw new Error(r.error || "Couldn't save");
-      await load(false);
-      const m = $("#sendMsg"); if (m) { m.className = "msg ok"; m.textContent = "Thanks " + name + ", your picks are in. You can change them any time before the deadline."; m.scrollIntoView({ block: "center", behavior: "smooth" }); }
-    } catch (e) {
-      msg.className = "msg err"; msg.textContent = "Didn't send: " + e.message + ". Check your signal and try again.";
-    } finally { btn.disabled = false; btn.textContent = "Send my picks"; }
-  }
-
-  async function approve() {
-    const msg = $("#pamMsg"), btn = $("#approveBtn");
-    const pin = $("#pin").value.trim();
-    if (!pin) { msg.className = "msg err"; msg.textContent = "Enter the PIN."; return; }
-    const decisions = {}; plan.choices.forEach(c => decisions[c.id] = $("#dec-" + c.id).value);
-    btn.disabled = true; btn.textContent = "Approving…";
-    try {
-      const r = await api("POST", { action: "approve", week: plan.week, pin, decisions, note: $("#pamNote").value.trim() });
-      if (!r.ok) throw new Error(r.error || "Couldn't approve");
-      await load(false); window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (e) {
-      msg.className = "msg err"; msg.textContent = e.message; btn.disabled = false; btn.textContent = "Approve this shop";
+  // ---------- events ----------
+  document.addEventListener("click", async e => {
+    const el = e.target.closest("[data-act]"); if (!el) return;
+    const act = el.dataset.act;
+    if (act === "closeQuick") { if (e.target.closest("[data-stop]")) return; sheet = null; render(); return; }
+    if (act === "iam") { me = el.dataset.name; store.set("name", me); loadMine(); pam = null; tab = "week"; render(); window.scrollTo(0, 0); return; }
+    if (act === "who") { me = ""; store.del("name"); render(); return; }
+    if (act === "tab") { tab = el.dataset.tab; render(); window.scrollTo(0, 0); return; }
+    if (act === "vote") {
+      const id = el.dataset.poll, k = el.dataset.key, s = new Set(sets(mine.picks[id]));
+      s.has(k) ? s.delete(k) : s.add(k);
+      const v = fromSet(s); if (v) mine.picks[id] = v; else delete mine.picks[id];
+      queueSave(); return;
     }
-  }
-
-  async function load(first = true) {
-    try {
-      if (first) {
-        const r = await fetch("plan.json?ts=" + Date.now(), { cache: "no-store" });
-        if (!r.ok) throw new Error("plan");
-        plan = await r.json();
-      }
-      try { state = await api("GET", null, plan.week); } catch { state = { votes: [], approval: null }; }
-      state.votes = state.votes || [];
-      render();
-    } catch {
-      $("#app").innerHTML = `<p class="loading">No shop planned yet this week. Check back soon.</p>`;
+    if (act === "like") {
+      const key = "l_" + el.dataset.id;
+      if (mine.picks[key] === "A") delete mine.picks[key]; else mine.picks[key] = "A";
+      queueSave(); return;
     }
-  }
+    if (act === "quick") { sheet = { q: "" }; render(); return; }
+    if (act === "doneQuick") {
+      const free = ($("#qaFree")?.value || "").split(/[,\n]/).map(s => s.trim()).filter(Boolean);
+      for (const f of free) if (!mine.extras.some(x => x.toLowerCase() === f.toLowerCase())) mine.extras.push(f.slice(0, 60));
+      sheet = null; queueSave(); return;
+    }
+    if (act === "pamPoll") {
+      const id = el.dataset.poll, k = el.dataset.key, s = new Set(sets(pam.decisions[id]));
+      s.has(k) ? s.delete(k) : s.add(k);
+      pam.decisions[id] = fromSet(s) || "none"; render(); return;
+    }
+    if (act === "pamRemoveExtra") { pam.extras = pam.extras.filter(x => x !== el.dataset.name); render(); return; }
+    if (act === "approve") {
+      const pin = ($("#pin").value || "").trim(), msg = $("#pamMsg");
+      if (!pin) { msg.textContent = "Enter your PIN."; return; }
+      const decisions = { ...pam.decisions };
+      for (const p of allPicks()) if (pam.chosen[p.id]) decisions["p_" + p.id] = "A";
+      el.disabled = true; el.textContent = "Approving…";
+      try {
+        const r = await api("POST", { action: "approve", week: plan.week, pin, decisions, note: JSON.stringify({ x: pam.extras }).slice(0, 500) });
+        if (!r.ok) throw new Error(r.error || "Couldn't approve");
+        await refresh(); toast("Shop approved"); window.scrollTo(0, 0);
+      } catch (err) { msg.textContent = err.message; el.disabled = false; el.textContent = "Approve shop"; }
+    }
+  });
+  document.addEventListener("change", e => {
+    const el = e.target.closest("[data-act]"); if (!el) return;
+    if (el.dataset.act === "qa") {
+      const n = el.dataset.name;
+      if (el.checked) { if (!mine.extras.some(x => x.toLowerCase() === n.toLowerCase())) mine.extras.push(n); }
+      else mine.extras = mine.extras.filter(x => x.toLowerCase() !== n.toLowerCase());
+      const t = $(".sheet .btn"); if (t) t.textContent = "Done" + (mine.extras.length ? " · " + mine.extras.length + " added" : "");
+    }
+    if (el.dataset.act === "pamPick") { pam.chosen[el.dataset.id] = el.checked; render(); }
+  });
+  document.addEventListener("input", e => { if (e.target.id === "qaSearch") { sheet.q = e.target.value; sheet.focus = true; render(); } });
 
-  $("#sendBtn").addEventListener("click", send);
-  load();
+  // ---------- load + refresh ----------
+  async function refresh() {
+    try { const d = await api("GET", null, plan.week); data = { votes: d.votes || [], approval: d.approval || null }; } catch {}
+    if (!saving && !saveTimer) loadMine();
+    render();
+  }
+  async function boot() {
+    try {
+      const r = await fetch("plan.json?ts=" + Date.now(), { cache: "no-store" });
+      plan = await r.json();
+      if (!plan.polls && plan.choices) plan.polls = plan.choices;
+    } catch { $("#app").innerHTML = `<p class="loading">No shop planned yet. Check back soon.</p>`; return; }
+    if (DEMO) plan.note = (plan.note ? plan.note + " " : "") + "(Demo mode: votes stay on this phone.)";
+    await refresh();
+    setInterval(() => { if (!document.hidden && !sheet && !saving && !saveTimer) refresh(); }, 15000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+  }
+  boot();
 })();
 </script>
 </body>
