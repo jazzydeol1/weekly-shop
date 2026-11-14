@@ -34,6 +34,12 @@ function clean_(s, max) {
   return String(s == null ? '' : s).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max);
 }
 
+// Sheets turns "2026-11-21" into a date when it's written, so read either form back as yyyy-MM-dd.
+function weekStr_(v) {
+  if (v instanceof Date) return Utilities.formatDate(v, SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
+  return String(v || '').trim();
+}
+
 function validWeek_(w) { return /^\d{4}-\d{2}-\d{2}$/.test(String(w || '')); }
 
 function readWeek_(week) {
@@ -41,7 +47,7 @@ function readWeek_(week) {
   const latest = {};
   const vRows = votesSheet_().getDataRange().getValues().slice(1);
   vRows.forEach(r => {
-    if (String(r[1]) !== week) return;
+    if (weekStr_(r[1]) !== week) return;
     const key = String(r[2]).toLowerCase();
     let picks = {};
     try { picks = JSON.parse(r[3] || '{}'); } catch (e) {}
@@ -52,7 +58,7 @@ function readWeek_(week) {
   let approval = null;
   const aRows = approvalsSheet_().getDataRange().getValues().slice(1);
   aRows.forEach(r => {
-    if (String(r[1]) !== week) return;
+    if (weekStr_(r[1]) !== week) return;
     let d = {};
     try { d = JSON.parse(r[2] || '{}'); } catch (e) {}
     approval = { ts: new Date(r[0]).toISOString(), decisions: d, note: String(r[3] || '') };
@@ -83,7 +89,7 @@ function doPost(e) {
         const v = String(body.picks[k]);
         if (['A', 'B', 'both', 'none'].indexOf(v) >= 0) picks[clean_(k, 30)] = v;
       });
-      votesSheet_().appendRow([new Date(), week, name, JSON.stringify(picks), clean_(body.comment, 500)]);
+      votesSheet_().appendRow([new Date(), "'" + week, name, JSON.stringify(picks), clean_(body.comment, 500)]);
       return json_({ ok: true });
     }
 
@@ -99,7 +105,7 @@ function doPost(e) {
         const v = String(body.decisions[k]);
         if (['A', 'B', 'both', 'none'].indexOf(v) >= 0) decisions[clean_(k, 30)] = v;
       });
-      approvalsSheet_().appendRow([new Date(), week, JSON.stringify(decisions), clean_(body.note, 500)]);
+      approvalsSheet_().appendRow([new Date(), "'" + week, JSON.stringify(decisions), clean_(body.note, 500)]);
       return json_({ ok: true });
     }
 
