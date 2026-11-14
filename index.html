@@ -95,11 +95,31 @@
   .lh{display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid var(--sep)} .lh:last-child{border-bottom:0}
   .loading{text-align:center;padding:60px 0;color:var(--muted)}
   .sr{position:absolute;left:-9999px}
+  /* submit bar */
+  .submitbar{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom));display:flex;justify-content:center;padding:0 14px 8px;z-index:6;pointer-events:none}
+  .submitbar .in{width:100%;max-width:520px;display:flex;flex-direction:column;gap:4px;pointer-events:auto}
+  .submitbar .btn.big{width:100%;box-shadow:0 4px 14px rgba(21,32,26,.18)}
+  .submitbar .btn.done{background:#fff;color:var(--g);border:1.5px solid var(--g)}
+  .submitbar .hint{font-size:12px;text-align:center;color:var(--muted);background:rgba(243,245,241,.92);border-radius:999px;padding:2px 8px;align-self:center}
+  .wrap.has-submit{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  /* everyone's votes + results */
+  .who-vote{padding:10px 0;border-bottom:1px solid var(--sep);display:flex;flex-direction:column;gap:4px} .who-vote:last-child{border-bottom:0}
+  .who-vote .lines{font-size:13px;display:flex;flex-direction:column;gap:2px;padding-left:28px}
+  .res{padding:10px 0;border-bottom:1px solid var(--sep);display:flex;flex-direction:column;gap:6px} .res:last-child{border-bottom:0}
+  .res-final{font-size:14px;font-weight:700}
+  .res-how{font-size:12px;font-weight:600}
+  .res-how.ok{color:var(--g)} .res-how.over{color:var(--o)}
+  .res-people{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px}
+  .res-people span{display:inline-flex;align-items:center;gap:4px}
+  .yes{color:var(--g);font-weight:600} .no{color:#A1301F;font-weight:600}
+  .you{border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;background:var(--g2);color:#14513A}
+  .you.mixed{background:var(--o2);color:#7a3a14}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"><p class="loading">Loading this week's shop…</p></div>
 <nav class="tabs" id="tabs" hidden aria-label="Main"><div class="in" id="tabsIn"></div></nav>
+<div id="submitHost"></div>
 <div id="sheetHost"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -132,7 +152,7 @@
   let plan, data = { votes: [], approval: null }, me = store.get("name", ""), tab = "week", sheet = null;
   let mine = { picks: {}, extras: [], tried: {} };            // my current vote
   let pam = null;                                  // Pam's draft decisions
-  let saveTimer = null, saving = false;
+  let saving = false, dirty = false;
 
   // ---------- backend ----------
   async function api(method, body, week) {
@@ -153,6 +173,9 @@
     return (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })).json();
   }
   const parseNote = s => { try { const o = JSON.parse(s || "{}"); return o && typeof o === "object" ? o : {}; } catch { return s ? { text: String(s) } : {}; } };
+  // a vote only counts if it has choices for this week's menu (ignores empty or old-menu rows)
+  const counts = v => { if (!v) return false; const ids = new Set([...(plan.polls || []).map(p => p.id), ...[...(plan.goodValue || []), ...(plan.forYou || [])].map(p => "l_" + p.id)]);
+    if (Object.keys(v.picks || {}).some(k => ids.has(k))) return true; const o = parseNote(v.comment); return (Array.isArray(o.x) && o.x.length > 0) || (o.t && Object.keys(o.t).length > 0); };
   const voteOf = name => data.votes.find(v => v.name.toLowerCase() === String(name).toLowerCase());
   const extrasOf = v => { const o = parseNote(v && v.comment); return Array.isArray(o.x) ? o.x : []; };
   const triedOf = v => { const o = parseNote(v && v.comment); return o.t && typeof o.t === "object" ? o.t : {}; };
@@ -193,30 +216,36 @@
   }
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1600); }
 
-  // ---------- saving my vote ----------
-  function queueSave() {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveNow, 500);
+  // ---------- my choices: kept on this phone until I press Submit ----------
+  const draftKey = () => "draft:" + plan.week + ":" + String(me).toLowerCase();
+  function changed() {                       // called after every tap
+    dirty = true;
+    store.set(draftKey(), { mine, dirty: true });
+    render();
   }
-  async function saveNow() {
-    saveTimer = null;
-    if (!me) return;
-    saving = true;
+  async function submit() {
+    if (!me || saving) return;
+    saving = true; render();
     let comment = JSON.stringify({ x: mine.extras.slice(0, 25), t: mine.tried });
     while (comment.length > 500 && mine.extras.length) { mine.extras.pop(); comment = JSON.stringify({ x: mine.extras, t: mine.tried }); }
     const body = { action: "vote", week: plan.week, name: me, picks: mine.picks, comment };
-    // optimistic local update
-    data.votes = data.votes.filter(v => v.name.toLowerCase() !== me.toLowerCase());
-    if (Object.keys(mine.picks).length || mine.extras.length || Object.keys(mine.tried).length) data.votes.push({ ts: new Date().toISOString(), name: me, picks: { ...mine.picks }, comment });
-    render();
-    try { const r = await api("POST", body); if (!r.ok) throw new Error(r.error || "Not saved"); toast("Saved"); }
-    catch (e) { toast("Not saved, check your signal"); }
-    finally { saving = false; }
+    try {
+      const r = await api("POST", body); if (!r.ok) throw new Error(r.error || "Not sent");
+      dirty = false; store.del(draftKey());
+      data.votes = data.votes.filter(v => v.name.toLowerCase() !== me.toLowerCase());
+      data.votes.push({ ts: new Date().toISOString(), name: me, picks: { ...mine.picks }, comment });
+      toast("Submitted. Everyone can see your choices");
+    } catch (e) { toast("Not sent, check your signal and press Submit again"); }
+    finally { saving = false; render(); }
   }
   function loadMine() {
+    const d = store.get(draftKey(), null);
+    if (d && d.dirty && d.mine) { mine = { picks: d.mine.picks || {}, extras: d.mine.extras || [], tried: d.mine.tried || {} }; dirty = true; return; }
     const v = voteOf(me);
     mine = { picks: v ? { ...(v.picks || {}) } : {}, extras: v ? extrasOf(v) : [], tried: v ? { ...triedOf(v) } : {} };
+    dirty = false;
   }
+  const timeOf = ts => { try { return new Date(ts).toLocaleString("en-GB", { weekday: "short", hour: "numeric", minute: "2-digit" }); } catch { return ""; } };
 
   // ---------- views ----------
   function header() {
@@ -304,14 +333,87 @@
     const appr = data.approval;
     return `${header()}
       ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
-      ${appr ? `<div class="banner g"><b>Pam approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot.</div>` : ""}
+      ${appr ? `<div class="banner g"><b>${esc(plan.approver || "Pam")} approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot. Here's what went in and how it compares with everyone's votes.</div>` + resultsCard() : ""}
       ${!appr && isPam() ? `<div class="banner g">Once the votes are in, tap <b>Sign off</b> below${plan.approveBy ? " by " + esc(plan.approveBy) : ""}.</div>` : ""}
       ${pollsCard("vote")}
+      ${appr ? "" : `<p class="sm muted" style="margin:0 2px">Tap your choices below, then press <b>Submit</b> at the bottom. Faces show what everyone has submitted so far.</p>`}
       ${(plan.goodValue || []).length ? `<div class="between sec-h"><h2>Good value this week</h2><span class="xs muted">Compared with what you usually pay</span></div><section class="card">${pickRows(plan.goodValue, "value")}</section>` : ""}
       ${(plan.forYou || []).length ? `<div class="between sec-h"><h2>Picked for you</h2><span class="xs muted">New, in season, or never tried</span></div><section class="card">${pickRows(plan.forYou, "you")}</section>` : ""}
       ${triedCard("vote")}
       ${extrasCard("vote")}
+      ${everyoneCard()}
       ${regularsCard()}`;
+  }
+
+  // ---------- full view: everyone's choices ----------
+  const labelsFor = (p, val) => sets(val).map(k => (p.options.find(o => o.key === k) || {}).label).filter(Boolean);
+  function everyoneCard() {
+    const fam = plan.family || [];
+    const done = fam.filter(f => voteOf(f.name)).length;
+    return `<div class="between sec-h"><h2>Everyone's choices</h2><span class="xs muted">${done} of ${fam.length} submitted</span></div>
+      <section class="card">${fam.map(f => {
+        const v = voteOf(f.name);
+        if (!v) return `<div class="who-vote"><span class="row" style="gap:8px">${face(f.name, "av18")}<b style="font-size:14px">${esc(f.name)}</b><span class="sm muted">hasn't submitted yet</span></span></div>`;
+        const picks = v.picks || {}, lines = [];
+        for (const p of plan.polls || []) { const l = labelsFor(p, picks[p.id]); lines.push(`<span><span class="muted">${esc(p.question)}:</span> ${l.length ? esc(l.join(" + ")) : `<span class="muted">no pick</span>`}</span>`); }
+        const up = allPicks().filter(p => picks["l_" + p.id] === "A").map(p => p.name), down = allPicks().filter(p => picks["l_" + p.id] === "B").map(p => p.name);
+        if (up.length) lines.push(`<span><span class="yes">Yes to</span> ${esc(up.join(", "))}</span>`);
+        if (down.length) lines.push(`<span><span class="no">No to</span> ${esc(down.join(", "))}</span>`);
+        const tr = triedOf(v), trl = (plan.tried || []).filter(it => tr[it.id]).map(it => it.name + ": " + ((TRIED.find(t => t[0] === tr[it.id]) || [])[1] || ""));
+        if (trl.length) lines.push(`<span><span class="muted">Rated:</span> ${esc(trl.join("; "))}</span>`);
+        const ex = extrasOf(v); if (ex.length) lines.push(`<span><span class="muted">Extras:</span> ${esc(ex.join(", "))}</span>`);
+        return `<div class="who-vote"><span class="row" style="gap:8px">${face(f.name, "av18")}<b style="font-size:14px">${esc(f.name)}</b><span class="xs muted">submitted ${esc(timeOf(v.ts))}</span></span><div class="lines">${lines.join("")}</div></div>`;
+      }).join("")}</section>`;
+  }
+
+  // ---------- full view: what Pam approved, and how it compares with the votes ----------
+  function resultsCard() {
+    const a = data.approval; if (!a) return "";
+    const d = a.decisions || {}, note = parseNote(a.note), fam = plan.family || [];
+    let myWins = 0, myTotal = 0; const myLost = [];
+    const polls = (plan.polls || []).map(p => {
+      const fin = new Set(sets(d[p.id])), tl = tally(p.id), na = tl.A.length, nb = tl.B.length;
+      const maj = na > nb ? "A" : nb > na ? "B" : null;
+      const lbl = k => (p.options.find(o => o.key === k) || {}).label;
+      let how, cls = "ok";
+      if (!na && !nb) how = "Nobody voted, so " + esc(plan.approver || "Pam") + " chose";
+      else if (!maj) how = `Votes were tied ${na}–${nb}, so ${esc(plan.approver || "Pam")} decided`;
+      else if (fin.has(maj)) how = fin.size > 1 ? `Family favourite (${maj === "A" ? na : nb}–${maj === "A" ? nb : na}), and ${esc(plan.approver || "Pam")} added the other one too` : `Went with the family vote (${maj === "A" ? na + "–" + nb : nb + "–" + na})`;
+      else { how = `${esc(plan.approver || "Pam")} overrode the vote: the family picked ${esc(lbl(maj))} ${maj === "A" ? na + "–" + nb : nb + "–" + na}`; cls = "over"; }
+      const people = fam.filter(f => { const v = voteOf(f.name); return v && sets((v.picks || {})[p.id]).length; }).map(f => {
+        const mineSet = sets(voteOf(f.name).picks[p.id]), got = mineSet.some(k => fin.has(k));
+        if (f.name.toLowerCase() === String(me).toLowerCase()) { myTotal++; if (got) myWins++; else myLost.push(p.question); }
+        const why = got ? "got it" : !maj ? "not picked" : mineSet.includes(maj) ? "overridden" : "outvoted";
+        return `<span>${face(f.name)}<span class="${got ? "yes" : "no"}">${esc(f.name)} ${got ? "✓" : "✗"} ${why}</span><span class="muted">(${esc(mineSet.map(lbl).join(" + "))})</span></span>`;
+      }).join("");
+      return `<div class="res"><span class="xs muted" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700">${esc(p.question)}</span>
+        <span class="res-final">${fin.size ? esc([...fin].map(lbl).join(" + ")) : "Neither"}</span>
+        <span class="res-how ${cls}">${how}</span>${people ? `<div class="res-people">${people}</div>` : ""}</div>`;
+    }).join("");
+    const picks = allPicks().map(p => {
+      const inIt = d["p_" + p.id] === "A", L = likesFor(p.id), D = dislikesFor(p.id), net = L.length - D.length;
+      const flag = inIt && net < 0 ? ` <span class="no">· added by ${esc(plan.approver || "Pam")} despite the votes</span>` : !inIt && net >= 2 ? ` <span class="no">· left out by ${esc(plan.approver || "Pam")} despite the votes</span>` : "";
+      return `<div class="list-row" style="flex-direction:column;gap:2px"><span class="between"><b>${esc(p.name)}</b><span class="${inIt ? "yes" : "muted"}">${inIt ? "In the shop" : "Left out"}</span></span>
+        <span class="xs muted">${L.length ? "Yes: " + esc(L.join(", ")) : ""}${L.length && D.length ? " · " : ""}${D.length ? "No: " + esc(D.join(", ")) : ""}${!L.length && !D.length ? "No votes" : ""}${flag}</span></div>`;
+    }).join("");
+    const ex = (note.x || []), tr = note.t || {};
+    const you = myTotal ? (myWins === myTotal ? `<div class="you">All ${myTotal} of your meal picks made it into the shop.</div>` : `<div class="you mixed">${myWins} of ${myTotal} of your meal picks made it. Not this time: ${esc(myLost.join(", "))}.</div>`) : "";
+    return `${you}<div class="between sec-h"><h2>What ${esc(plan.approver || "Pam")} approved</h2><span class="xs muted">${esc(timeOf(a.ts))}</span></div>
+      <section class="card">${polls}</section>
+      ${picks ? `<section class="card" style="padding-top:4px;padding-bottom:4px"><h2 style="font-size:14px;margin:8px 0 2px">Good value and picked for you</h2>${picks}</section>` : ""}
+      ${ex.length || Object.keys(tr).length ? `<section class="card pad">${ex.length ? `<div class="sm"><b>Extras going in:</b> ${esc(ex.join(", "))}</div>` : ""}
+        ${(plan.tried || []).filter(it => tr[it.id]).map(it => `<div class="sm"><b>${esc(it.name)}:</b> ${esc((TRIED.find(t => t[0] === tr[it.id]) || [])[1] || "")}</div>`).join("")}</section>` : ""}`;
+  }
+
+  function submitBar() {
+    if (!me || !plan || tab !== "week" || approved()) return "";
+    const v = voteOf(me), any = Object.keys(mine.picks).length || mine.extras.length || Object.keys(mine.tried).length;
+    let btn, hint;
+    if (saving) { btn = `<button class="btn big" disabled>Submitting…</button>`; hint = ""; }
+    else if (dirty) { btn = `<button class="btn big" data-act="submit" ${any || v ? "" : "disabled"}>Submit</button>`; hint = v ? "You've made changes. Press Submit to update your choices" : "Not sent yet. Press Submit so everyone can see your choices"; }
+    else if (v) { btn = `<button class="btn big done" disabled>Submitted ✓ ${esc(timeOf(v.ts))}</button>`; hint = "Change anything and press Submit again"; }
+    else { btn = `<button class="btn big" disabled>Submit</button>`; hint = "Pick your choices, then press Submit"; }
+    return `<div class="submitbar"><div class="in">${hint ? `<span class="hint">${hint}</span>` : ""}${btn}</div></div>`;
   }
 
   function initPam() {
@@ -333,8 +435,8 @@
   function pamView() {
     if (approved()) {
       const d = data.approval.decisions || {}, note = parseNote(data.approval.note);
-      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying.</div>
-        <section class="card pad">${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
+      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying. Everyone can see this summary.</div>${resultsCard()}
+        <section class="card pad" hidden>${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
         ${allPicks().filter(p => d["p_" + p.id] === "A").map(p => `<div class="list-row"><span>${esc(p.name)}</span><span class="muted">${money(p.price)}</span></div>`).join("")}
         ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}
         ${(plan.tried || []).filter(it => note.t && note.t[it.id]).map(it => `<div class="list-row"><span>${esc(it.name)}</span><span class="muted">${esc((TRIED.find(t => t[0] === note.t[it.id]) || [])[1] || "")}</span></div>`).join("")}</section>`;
@@ -344,6 +446,7 @@
     return `<header class="row">${face(me, "av34")}<div style="display:flex;flex-direction:column;flex-grow:1"><h1>Sign off, ${esc(me)}</h1>
         <span class="sm muted">${(plan.family || []).filter(f => voteOf(f.name)).length} of ${(plan.family || []).length} voted · ${esc(plan.title)}</span></div></header>
       ${pollsCard("pam")}
+      ${everyoneCard()}
       <section class="card"><h2 style="font-size:14px;margin:10px 0 2px">Good value and picked for you</h2>
         ${allPicks().map(p => `<label class="qa-row"><input type="checkbox" data-act="pamPick" data-id="${esc(p.id)}" ${pam.chosen[p.id] ? "checked" : ""}>
           <span style="flex-grow:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)} <span class="sm muted">${esc(p.deal || money(p.price))}</span></span>
@@ -414,10 +517,11 @@
     const app = $("#app");
     const y = window.scrollY;
     if (!me || !person(me) || !(plan.family || []).some(f => f.name.toLowerCase() === me.toLowerCase())) {
-      app.innerHTML = whoView(); $("#tabs").hidden = true; return;
+      app.innerHTML = whoView(); $("#tabs").hidden = true; $("#submitHost").innerHTML = ""; return;
     }
     $("#tabs").hidden = false; tabsBar();
     app.innerHTML = tab === "last" ? lastView() : tab === "pam" && isPam() ? pamView() : weekView();
+    const sb = submitBar(); $("#submitHost").innerHTML = sb; app.classList.toggle("has-submit", !!sb);
     window.scrollTo(0, y);
     $("#sheetHost").innerHTML = sheet ? quickSheet() : "";
     if (sheet && sheet.focus) { const i = $("#qaSearch"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); sheet.focus = false; }
@@ -435,28 +539,29 @@
       const id = el.dataset.poll, k = el.dataset.key, s = new Set(sets(mine.picks[id]));
       s.has(k) ? s.delete(k) : s.add(k);
       const v = fromSet(s); if (v) mine.picks[id] = v; else delete mine.picks[id];
-      queueSave(); return;
+      changed(); return;
     }
     if (act === "like") {
       const key = "l_" + el.dataset.id, v = el.dataset.v || "A";
       if (mine.picks[key] === v) delete mine.picks[key]; else mine.picks[key] = v;
-      queueSave(); return;
+      changed(); return;
     }
     if (act === "tried") {
       const id = el.dataset.id, v = el.dataset.v;
       if (mine.tried[id] === v) delete mine.tried[id]; else mine.tried[id] = v;
-      queueSave(); return;
+      changed(); return;
     }
     if (act === "pamTried") {
       const id = el.dataset.id, v = el.dataset.v;
       if (pam.tried[id] === v) delete pam.tried[id]; else pam.tried[id] = v;
       render(); return;
     }
+    if (act === "submit") { submit(); return; }
     if (act === "quick") { sheet = { q: "" }; render(); return; }
     if (act === "doneQuick") {
       const free = ($("#qaFree")?.value || "").split(/[,\n]/).map(s => s.trim()).filter(Boolean);
       for (const f of free) if (!mine.extras.some(x => x.toLowerCase() === f.toLowerCase())) mine.extras.push(f.slice(0, 60));
-      sheet = null; queueSave(); return;
+      sheet = null; changed(); return;
     }
     if (act === "pamPoll") {
       const id = el.dataset.poll, k = el.dataset.key, s = new Set(sets(pam.decisions[id]));
@@ -491,8 +596,8 @@
 
   // ---------- load + refresh ----------
   async function refresh() {
-    try { const d = await api("GET", null, plan.week); data = { votes: d.votes || [], approval: d.approval || null }; } catch {}
-    if (!saving && !saveTimer) loadMine();
+    try { const d = await api("GET", null, plan.week); data = { votes: (d.votes || []).filter(counts), approval: d.approval || null }; } catch {}
+    if (!saving && !dirty) loadMine();
     render();
   }
   async function boot() {
@@ -503,7 +608,7 @@
     } catch { $("#app").innerHTML = `<p class="loading">No shop planned yet. Check back soon.</p>`; return; }
     if (DEMO) plan.note = (plan.note ? plan.note + " " : "") + "(Demo mode: votes stay on this phone.)";
     await refresh();
-    setInterval(() => { if (!document.hidden && !sheet && !saving && !saveTimer) refresh(); }, 15000);
+    setInterval(() => { if (!document.hidden && !sheet && !saving) refresh(); }, 15000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
   }
   boot();
