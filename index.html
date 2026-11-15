@@ -334,7 +334,7 @@
     const appr = data.approval;
     return `${header()}
       ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
-      ${appr ? `<div class="banner g"><b>${esc(plan.approver || "Pam")} approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot. Here's what went in and how it compares with everyone's votes.</div>` + resultsCard() : ""}
+      ${appr ? `<div class="banner g"><b>${esc(plan.approver || "Pam")} approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot. Here's what went in and how it compares with everyone's votes.</div>` + orderCard() + resultsCard() : ""}
       ${!appr && isPam() ? `<div class="banner g">Once the votes are in, tap <b>Sign off</b> below${plan.approveBy ? " by " + esc(plan.approveBy) : ""}.</div>` : ""}
       ${pollsCard("vote")}
       ${appr ? "" : `<p class="sm muted" style="margin:0 2px">Tap your choices below, then press <b>Submit</b> at the bottom. Faces show what everyone has submitted so far.</p>`}
@@ -441,7 +441,7 @@
     if (editLocked()) return `<section class="card pad"><h2>Add to the shop</h2><p class="sm muted" style="margin:6px 0 0">Ocado's cut-off has passed${plan.editUntil ? " (" + esc(plan.editUntil) + ")" : ""}, so nothing more can go in this order. Tell Jas if it's urgent.</p></section>`;
     const quick = (plan.quickAdd || []).filter(i => !seen.has(i.name.toLowerCase())).slice(0, 14);
     return `<section class="card pad" style="display:flex;flex-direction:column;gap:10px">
-      <div><h2>Forgot something?</h2><span class="sm muted">Add it here ${until}. Claude checks every few hours and adds it to the Ocado ${plan.status === "ordered" ? "order" : "trolley"}.</span></div>
+      <div><h2>Forgot something?</h2><span class="sm muted">Add it here ${until}. Claude adds it to the Ocado ${plan.status === "ordered" ? "order" : "trolley"}. You can also just add things on Ocado as usual; Claude includes them without doubling up.</span></div>
       ${have.length ? `<div class="sm"><span class="muted">Already in:</span> ${esc(have.join(", "))}</div>` : ""}
       ${adding.length ? `<div class="chips">${adding.map(x => `<span class="chip"><b>${esc(x)}</b><button aria-label="Remove ${esc(x)}" data-act="addRemove" data-name="${esc(x)}">${ICON.x}</button></span>`).join("")}</div>` : ""}
       <label for="addFree" class="sr">What do you want to add?</label>
@@ -451,6 +451,13 @@
         <button class="btn big" style="flex-grow:1;background:#2E8B5F;color:#fff" data-act="addSave">Add ${adding.length} to the shop</button></div>
         <span id="addMsg" class="sm" style="color:#B5521B;min-height:1em"></span>` : ""}
     </section>`;
+  }
+  // what's actually in the Ocado order (snapshot Claude saves after checkout and before the cut-off)
+  function orderCard() {
+    const ag = plan.agreed || []; if (!ag.length) return "";
+    return `<section class="card pad"><div class="between" style="align-items:center"><h2>In the Ocado order</h2>${plan.orderTotal ? `<b>${money(plan.orderTotal)}</b>` : ""}</div>
+      <span class="sm muted">${plan.agreedAt ? "Checked " + esc(plan.agreedAt) + ". " : ""}Anyone can still add things on Ocado${plan.editUntil ? " until " + esc(plan.editUntil) : ""}. Claude checks it again before the cut-off.</span>
+      ${ag.map(r => `<div class="list-row"><span>${esc(r[0])}</span><span class="muted">${esc(r[1] != null ? "×" + r[1] : "")}</span></div>`).join("")}</section>`;
   }
   async function saveAdditions(el) {
     const pin = ($("#addPin").value || "").trim(), msg = $("#addMsg");
@@ -471,7 +478,7 @@
   function pamView() {
     if (approved()) {
       const d = data.approval.decisions || {}, note = parseNote(data.approval.note);
-      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying. Everyone can see this summary.</div>${addMoreCard()}${resultsCard()}
+      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying. Everyone can see this summary.</div>${addMoreCard()}${orderCard()}${resultsCard()}
         <section class="card pad" hidden>${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
         ${allPicks().filter(p => d["p_" + p.id] === "A").map(p => `<div class="list-row"><span>${esc(p.name)}</span><span class="muted">${money(p.price)}</span></div>`).join("")}
         ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}
