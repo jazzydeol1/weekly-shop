@@ -1,19 +1,27 @@
 {
-  "updated": "2026-11-13",
-  "staples": [],
-  "sometimes": [],
+  "updated": "2026-11-15",
+  "staples": [
+    "M&S southern fried chicken burgers",
+    "Unearthed Spanish potato & onion tortilla"
+  ],
+  "sometimes": [
+    "Russell's breaded chunky cod fillets"
+  ],
   "noThanks": [],
   "likes": [
     "Salmon (5 of the last 6 shops)",
     "Mexican nights (Gran Luchito tacos, black beans, chipotle)",
     "Quick lunches: BOL soups, wraps, chicken slices",
-    "Fruit for the kids: easy peelers, grapes, bananas"
+    "Fruit for the kids: easy peelers, grapes, bananas",
+    "Cathedral City mature cheddar 550g on offer (3 of 4 thumbs up)",
+    "Tiger Delight king prawns and Blue Dragon katsu (2 thumbs up each)"
   ],
   "valueNotes": [
     "Pizza Express American was £2.75 on offer, now £5.50: only suggest it when it's on offer",
     "Mowi salmon 2 for £10 is the price they usually pay"
   ],
   "log": [
-    "2026-11-13: tastes file started from order history (Sep–Nov 2026)"
+    "2026-11-13: tastes file started from order history (Sep–Nov 2026)",
+    "2026-11-15: 21 Nov test shop. Approved: pork medallions (majority), salmon, fajitas; cheddar, prawns, katsu. Burgers + tortilla 'keep', cod 'now and then'. BOL soups and leeks split 1–1 (not dropped). Pam added Good Phats butter, Griddle banana pancake bites and Bisto gravy 300g on Ocado herself (gravy 300g is the best value per 100g)."
   ]
 }
