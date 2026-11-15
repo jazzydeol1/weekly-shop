@@ -410,13 +410,13 @@
   }
  ],
  "trolley": {
-  "total": 97.48,
-  "savings": 8.84,
-  "items": 36,
+  "total": 120.68,
+  "savings": 9.85,
+  "items": 44,
   "slot": "Sat 21 Nov, 7:30–8:30am",
   "holdUntil": "9:15pm Sun 15 Nov",
   "holdUntilISO": "2026-11-15T21:15:00+00:00",
-  "filledAt": "Sun 15 Nov, 8:15pm"
+  "filledAt": "Sun 15 Nov, 9pm"
  },
  "agreed": [
   [
@@ -508,10 +508,6 @@
    2
   ],
   [
-   "Ocado British Chicken Thigh Fillets Boneless",
-   1
-  ],
-  [
    "Mission Wheat & White Tortilla Wraps",
    1
   ],
@@ -550,8 +546,36 @@
   [
    "Griddle Bakery Banana Pancake Bites (Pam)",
    1
+  ],
+  [
+   "M&S British Chicken Thigh Fillets",
+   2
+  ],
+  [
+   "Amoy Straight To Wok Medium Noodles",
+   2
+  ],
+  [
+   "M&S Family Crunchy Veg Medley",
+   1
+  ],
+  [
+   "M&S Italian Unsmoked Diced Pancetta",
+   2
+  ],
+  [
+   "M&S Creme Fraiche 300g",
+   1
+  ],
+  [
+   "Ocado Penne Pasta",
+   1
+  ],
+  [
+   "Ocado Basmati Rice 1kg",
+   1
   ]
  ],
- "agreedAt": "Sun 15 Nov, 8:15pm",
- "orderTotal": 97.48
+ "agreedAt": "Sun 15 Nov, 9pm",
+ "orderTotal": 120.68
 }
