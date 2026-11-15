@@ -334,7 +334,8 @@
     const appr = data.approval;
     return `${header()}
       ${plan.note ? `<div class="banner">${esc(plan.note)}</div>` : ""}
-      ${appr ? `<div class="banner g"><b>${esc(plan.approver || "Pam")} approved the shop.</b> Claude will fill the Ocado trolley and book the delivery slot. Here's what went in and how it compares with everyone's votes.</div>` + orderCard() + resultsCard() : ""}
+      ${readyCard()}
+      ${appr ? `<div class="banner g"><b>${esc(plan.approver || "Pam")} approved the shop.</b> ${nextStep()} Here's what went in and how it compares with everyone's votes.</div>` + orderCard() + resultsCard() : ""}
       ${!appr && isPam() ? `<div class="banner g">Once the votes are in, tap <b>Sign off</b> below${plan.approveBy ? " by " + esc(plan.approveBy) : ""}.</div>` : ""}
       ${pollsCard("vote")}
       ${appr ? "" : `<p class="sm muted" style="margin:0 2px">Tap your choices below, then press <b>Submit</b> at the bottom. Faces show what everyone has submitted so far.</p>`}
@@ -452,11 +453,33 @@
         <span id="addMsg" class="sm" style="color:#B5521B;min-height:1em"></span>` : ""}
     </section>`;
   }
-  // what's actually in the Ocado order (snapshot Claude saves after checkout and before the cut-off)
+  // what happens next, in plain words
+  function nextStep() {
+    const who = esc(plan.approver || "Pam");
+    if (plan.status === "ordered") return "The Ocado order is placed" + (plan.delivery ? " for " + esc(plan.delivery) : "") + ".";
+    if (plan.status === "trolley") return "Claude has filled the Ocado trolley and booked a slot. " + who + " checks out in the Ocado app.";
+    return "Claude will fill the Ocado trolley and book a delivery slot, then " + who + " checks out in the Ocado app.";
+  }
+  // trolley filled, slot booked: Pam checks out herself in Ocado (that's the final approval)
+  function readyCard() {
+    const t = plan.trolley; if (plan.status !== "trolley" || !t) return "";
+    const who = esc(plan.approver || "Pam"), held = t.holdUntilISO && Date.now() < Date.parse(t.holdUntilISO);
+    const hold = t.holdUntil ? (held ? "Slot held until " + esc(t.holdUntil) + "." : "The slot hold has run out, so pick a slot at checkout.") : "";
+    return `<section class="card pad" style="border:2px solid #2E8B5F;display:flex;flex-direction:column;gap:8px">
+      <div class="between" style="align-items:center"><h2>🛒 Trolley's ready to check out</h2><b>${money(t.total)}</b></div>
+      <span class="sm"><b>${esc(t.slot || plan.delivery || "")}</b>${t.savings ? " · saving " + money(t.savings) : ""}${plan.budget ? " · budget " + money(plan.budget) : ""}</span>
+      <span class="sm muted">${hold}</span>
+      ${isPam() ? `<span class="sm">Everything you approved is in the Ocado trolley, plus what you added on Ocado. Have a look, change anything you like, then check out in the Ocado app. That's the final approval.</span>
+        <a class="btn big" style="background:#2E8B5F;color:#fff;justify-content:center;text-decoration:none" href="https://www.ocado.com/basket" target="_blank" rel="noopener">Open Ocado to check out</a>`
+        : `<span class="sm muted">Waiting for ${who} to check out in the Ocado app.</span>`}
+    </section>`;
+  }
+  // what's in the trolley / the Ocado order (snapshot Claude saves when filling, after checkout and before the cut-off)
   function orderCard() {
     const ag = plan.agreed || []; if (!ag.length) return "";
-    return `<section class="card pad"><div class="between" style="align-items:center"><h2>In the Ocado order</h2>${plan.orderTotal ? `<b>${money(plan.orderTotal)}</b>` : ""}</div>
-      <span class="sm muted">${plan.agreedAt ? "Checked " + esc(plan.agreedAt) + ". " : ""}Anyone can still add things on Ocado${plan.editUntil ? " until " + esc(plan.editUntil) : ""}. Claude checks it again before the cut-off.</span>
+    const inTrolley = plan.status === "trolley";
+    return `<section class="card pad"><div class="between" style="align-items:center"><h2>${inTrolley ? "In the Ocado trolley" : "In the Ocado order"}</h2>${plan.orderTotal ? `<b>${money(plan.orderTotal)}</b>` : ""}</div>
+      <span class="sm muted">${plan.agreedAt ? "Checked " + esc(plan.agreedAt) + ". " : ""}${inTrolley ? "Not ordered yet. " + esc(plan.approver || "Pam") + " checks out in the Ocado app." : "Anyone can still add things on Ocado" + (plan.editUntil ? " until " + esc(plan.editUntil) : "") + ". Claude checks it again before the cut-off."}</span>
       ${ag.map(r => `<div class="list-row"><span>${esc(r[0])}</span><span class="muted">${esc(r[1] != null ? "×" + r[1] : "")}</span></div>`).join("")}</section>`;
   }
   async function saveAdditions(el) {
@@ -478,7 +501,7 @@
   function pamView() {
     if (approved()) {
       const d = data.approval.decisions || {}, note = parseNote(data.approval.note);
-      return `${header()}<div class="banner g"><b>Approved.</b> Claude will now fill the Ocado trolley, book a slot and check with Jas before paying. Everyone can see this summary.</div>${addMoreCard()}${orderCard()}${resultsCard()}
+      return `${header()}${readyCard()}<div class="banner g"><b>Approved.</b> ${nextStep()} Everyone can see this summary.</div>${addMoreCard()}${orderCard()}${resultsCard()}
         <section class="card pad" hidden>${(plan.polls || []).map(p => `<div class="list-row"><span>${esc(p.question)}</span><b>${esc(sets(d[p.id]).map(k => (p.options.find(o => o.key === k) || {}).label).join(" + ") || "Neither")}</b></div>`).join("")}
         ${allPicks().filter(p => d["p_" + p.id] === "A").map(p => `<div class="list-row"><span>${esc(p.name)}</span><span class="muted">${money(p.price)}</span></div>`).join("")}
         ${(note.x || []).map(x => `<div class="list-row"><span>${esc(x)}</span><span class="muted">extra</span></div>`).join("")}
@@ -502,7 +525,7 @@
         <div class="row" style="gap:8px"><label for="pin" class="sr">PIN</label><input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
           <button class="btn big" style="flex-grow:1;background:#2E8B5F" data-act="approve">Approve shop</button></div>
         <span id="pamMsg" class="sm" style="color:#F2B8A6;min-height:1em"></span>
-        <span class="sm" style="color:#B9C6BE">Claude then fills the Ocado trolley, books a slot and checks with Jas before paying.</span>
+        <span class="sm" style="color:#B9C6BE">Claude then fills the Ocado trolley and books a slot. You get a reminder, and you check out yourself in the Ocado app.</span>
       </section>`;
   }
 
