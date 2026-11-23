@@ -8,7 +8,7 @@
  "approveBy": "Fri 27 Nov, 8pm",
  "delivery": "Sat 28 Nov, 7:30–8:30am",
  "budget": 125,
- "note": "Prices checked on Ocado tonight (Mon 23 Nov). 6 dinners: Sunday roast, fish night, veggie night, beef chilli, chicken burgers and a Thai curry night. No salmon this week after two weeks running.",
+ "note": "Prices checked on Ocado tonight (Mon 23 Nov). 6 dinners: you choose 3 below, and beef chilli, burger night and a Thai curry are already planned. Not keen on a choice? Write what you'd rather have under it, and Pam will see it. No salmon this week after two weeks running.",
  "family": [
   {
    "name": "Pam",
@@ -101,14 +101,6 @@
   }
  ],
  "goodValue": [
-  {
-   "id": "bigham",
-   "name": "Charlie Bigham's Thai red chicken curry & rice x2",
-   "deal": "£7.50 each, was £9.95",
-   "price": 15,
-   "value": "£4.90 off for the two (25%): the same deal price you paid for the cottage pie on 21 Nov",
-   "why": "Two packs feed all four of you, and it's a different dinner from anything in recent weeks. Straight in the oven, so it's a good busy-night meal."
-  },
   {
    "id": "cheddar",
    "name": "Cathedral City mature cheddar 550g",
@@ -361,6 +353,11 @@
    "Red onions",
    1,
    1.05
+  ],
+  [
+   "Charlie Bigham's Thai red chicken curry & rice (curry night)",
+   2,
+   7.5
   ]
  ],
  "lastHad": [
@@ -425,6 +422,21 @@
   {
    "date": "Sun 11 Oct",
    "total": 100.14
+  }
+ ],
+ "dinners": [
+  {
+   "name": "Beef chilli",
+   "detail": "Ocado lean beef mince, kidney beans, rice"
+  },
+  {
+   "name": "Chicken burger night",
+   "detail": "M&S southern fried chicken burgers"
+  },
+  {
+   "name": "Thai red chicken curry",
+   "detail": "2 x Charlie Bigham's, £7.50 each (was £9.95)",
+   "price": 15
   }
  ]
 }
