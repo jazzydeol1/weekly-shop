@@ -1,14 +1,14 @@
 {
  "version": 3,
- "week": "2026-11-21",
- "title": "Live test shop · Sat 21 Nov",
+ "week": "2026-11-28",
+ "title": "Shop for Sat 28 Nov",
  "preview": false,
- "status": "trolley",
- "voteBy": "Sun 15 Nov, 4pm",
- "approveBy": "Sun 15 Nov, 7pm",
- "delivery": "Sat 21 Nov, 7:30–8:30am",
- "budget": 122,
- "note": "Live test: every price below was read from Ocado on Sat 14 Nov at 8:30pm and is rechecked when the trolley is filled. Vote by Sunday 4pm; Pam signs off by 7pm. Saturday morning slots are open and free with Smart Pass.",
+ "status": "voting",
+ "voteBy": "Fri 27 Nov, 6pm",
+ "approveBy": "Fri 27 Nov, 8pm",
+ "delivery": "Sat 28 Nov, 7:30–8:30am",
+ "budget": 125,
+ "note": "Prices checked on Ocado tonight (Mon 23 Nov). 6 dinners: Sunday roast, fish night, veggie night, beef chilli, chicken burgers and a Thai curry night. No salmon this week after two weeks running.",
  "family": [
   {
    "name": "Pam",
@@ -34,23 +34,24 @@
  "approver": "Pam",
  "polls": [
   {
-   "id": "mid",
-   "question": "Midweek dinner",
+   "id": "roast",
+   "question": "Sunday dinner",
    "options": [
     {
      "key": "A",
-     "label": "Sticky chicken drumstick traybake",
-     "detail": "2 x Ocado British chicken drumsticks 1kg + roast veg",
-     "price": 4.3,
-     "deal": "Everyday Savers: £2.15 a kilo, the cheapest meat on Ocado this week",
-     "lastHad": "not in recent shops"
+     "label": "Sunday roast (M&S roast deal)",
+     "detail": "M&S stuffed roast chicken 2.55kg, roasting potatoes, carrots/broccoli/sprouts, braised red cabbage and a Bramley apple pie",
+     "price": 20,
+     "deal": "£20 Family Roast Meal Deal: £26.55 normally, so £6.55 off (25%)",
+     "lastHad": "Roast chicken 2 weeks ago"
     },
     {
      "key": "B",
-     "label": "Pork medallions with apples & leeks",
-     "detail": "2 x Ocado 4 British pork loin medallions",
-     "price": 9,
-     "lastHad": "not in recent shops"
+     "label": "Pie night",
+     "detail": "4 x Pieminister Free Ranger pies (chicken, ham & leek) with peas and mash",
+     "price": 18.5,
+     "deal": "2 for £8, the same as you paid on 7 Nov, so not a real saving",
+     "lastHad": "3 weeks ago"
     }
    ]
   },
@@ -60,178 +61,181 @@
    "options": [
     {
      "key": "A",
-     "label": "Salmon",
-     "detail": "Mowi 4 Scottish salmon fillets 460g",
-     "price": 9,
-     "deal": "Now £9, was £11: £1 less than the 2-for-£10 you paid on 11 Nov, same weight",
-     "lastHad": "this week"
+     "label": "Sea bream",
+     "detail": "Fish Said Fred big sea bream fillets, 3 packs (freeze one), with potatoes and greens",
+     "price": 12,
+     "deal": "3 for £12 instead of £6.95 each: £4 a pack",
+     "lastHad": "4 weeks ago"
     },
     {
      "key": "B",
-     "label": "Sea bream",
-     "detail": "Fish Said Fred big sea bream fillets, 3 packs (freeze one)",
-     "price": 12,
-     "deal": "3 for £12 instead of £6.95 each: £4 a pack",
-     "lastHad": "not in recent shops"
+     "label": "Garlic prawn linguine",
+     "detail": "3 x Tiger Delight garlic & herb king prawns 200g (one for the freezer) with linguine and spinach",
+     "price": 11,
+     "deal": "Freezer Fillers 3 for £10 instead of £4 each",
+     "lastHad": "3 weeks ago"
     }
    ]
   },
   {
-   "id": "weekend",
-   "question": "Saturday dinner",
+   "id": "veg",
+   "question": "Veggie night",
    "options": [
     {
      "key": "A",
-     "label": "Fajita night",
-     "detail": "Old El Paso fajita kit + Ocado chicken thigh fillets 500g + grated cheese",
-     "price": 13,
-     "deal": "Kits are 4 for 3",
-     "lastHad": "tacos 2 wks ago"
+     "label": "Halloumi & winter veg traybake",
+     "detail": "2 x Ocado halloumi, butternut squash & sweet potato, red onions and peppers",
+     "price": 8,
+     "deal": "Ocado halloumi £2.25 (Everyday Savers)",
+     "lastHad": "not in recent shops"
     },
     {
      "key": "B",
      "label": "Pumpkin gnocchi, sage butter & parmesan",
-     "detail": "2 x Dell'Ugo fresh pumpkin gnocchi + Ocado Parmigiano + sage",
-     "price": 11.2,
-     "deal": "Gnocchi is in the £6 Pasta Deal Dine In",
-     "lastHad": "never tried"
+     "detail": "2 x Dell'Ugo fresh pumpkin gnocchi 450g with spinach",
+     "price": 8.5,
+     "deal": "In the £6 Pasta Deal (a gnocchi + a sauce)",
+     "lastHad": "never had"
     }
    ]
   }
  ],
  "goodValue": [
   {
-   "id": "bol",
-   "name": "BOL power soups",
-   "deal": "2 for £5",
-   "price": 5,
-   "value": "£2.50 each instead of £3.50: 29% off, same as you paid on 11 Nov",
-   "why": "You buy these most weeks for lunches. Take 2 or 4 while the multibuy is on."
+   "id": "bigham",
+   "name": "Charlie Bigham's Thai red chicken curry & rice x2",
+   "deal": "£7.50 each, was £9.95",
+   "price": 15,
+   "value": "£4.90 off for the two (25%): the same deal price you paid for the cottage pie on 21 Nov",
+   "why": "Two packs feed all four of you, and it's a different dinner from anything in recent weeks. Straight in the oven, so it's a good busy-night meal."
   },
   {
    "id": "cheddar",
    "name": "Cathedral City mature cheddar 550g",
    "deal": "£4, was £5.45",
    "price": 4,
-   "value": "27% off the normal price, and a bigger block than usual",
-   "why": "Cheese goes into wraps, toasties and the fajitas. It keeps for weeks, so this is a good week to stock up."
+   "value": "27% off the normal price. Same as you paid on 21 Nov, so stock up rather than a new saving",
+   "why": "It goes into wraps, toasties and the chilli, and it keeps for weeks."
   },
   {
-   "id": "prawns",
-   "name": "Tiger Delight jumbo raw king prawns 250g",
-   "deal": "£3, was £4",
-   "price": 3,
-   "value": "25% off, and 32p less than the marinated ones you paid £3.32 for on 7 Nov",
-   "why": "Freezer backup for a 10-minute stir-fry with the Amoy noodles. Raw ones are cheaper than cooked (£4.50) and taste better hot."
+   "id": "sausages",
+   "name": "Ocado 8 British pork sausages (swap)",
+   "deal": "£1.80 (Everyday Savers)",
+   "price": 1.8,
+   "value": "About half the price per sausage of the M&S Heritage Gold ones you had on 15 Nov (£3.50 a pack)",
+   "why": "A cheap swap to try for sausage & mash or a breakfast. If they're not as good, we go back to the M&S ones."
+  },
+  {
+   "id": "bol",
+   "name": "BOL power soups x2",
+   "deal": "2 for £5",
+   "price": 5,
+   "value": "£2.50 each instead of £3.50. Same as you paid last time",
+   "why": "Easy lunches you buy most weeks. Only worth it while the multibuy is on."
   }
  ],
  "forYou": [
+  {
+   "id": "pears",
+   "name": "Ocado ripe & ready Conference pears (4)",
+   "price": 2,
+   "tag": "In season",
+   "value": "Now £2, was £2.35",
+   "why": "British Conference pears are at their best now. A change from apples and grapes in lunchboxes."
+  },
   {
    "id": "leeks",
    "name": "Ocado British leeks 500g",
    "price": 1.1,
    "tag": "In season",
-   "value": "Seasonal Stars: £1.10, was £1.39, the same as you paid on 7 Nov",
-   "why": "Leeks are at their best now. They go with the pork option, and leek and potato soup for 4 costs about £3."
-  },
-  {
-   "id": "flawsome",
-   "name": "Flawsome! cold-pressed apple or orange juice 1L",
-   "price": 3.2,
-   "tag": "New",
-   "value": "Intro offer: £3.20, going up to £4",
-   "why": "New at Ocado, made from wonky fruit with nothing added. Worth one carton to see if the kids like it before the price goes up."
-  },
-  {
-   "id": "katsu",
-   "name": "Blue Dragon katsu curry kit",
-   "price": 3.4,
-   "tag": "Never tried",
-   "value": "2 for £5",
-   "why": "You haven't bought this before. Sauce and crumb for a chicken katsu: works with the cheap drumsticks or thighs, served with rice."
+   "value": "Seasonal Stars: £1.10, was £1.39, same as you paid on 7 Nov",
+   "why": "Good in the pies, the traybake or a leek & potato soup for 4 for about £3."
   }
  ],
  "tried": [
   {
-   "id": "t_cod",
-   "name": "Russell's breaded chunky cod fillets",
-   "when": "15 Nov shop",
-   "note": "Rate it after you've had it."
+   "id": "t_butterchicken",
+   "name": "The Spice Tailor butter chicken kit",
+   "when": "21 Nov shop"
   },
   {
-   "id": "t_burgers",
-   "name": "M&S southern fried chicken burgers",
-   "when": "15 Nov shop"
+   "id": "t_pancakes",
+   "name": "Griddle banana pancake bites",
+   "when": "21 Nov shop"
   },
   {
-   "id": "t_tortilla",
-   "name": "Unearthed Spanish potato & onion tortilla",
-   "when": "15 Nov shop"
+   "id": "t_mozz",
+   "name": "M&S mozzarella sticks",
+   "when": "21 Nov shop"
   }
  ],
  "quickAdd": [
   {
-   "name": "Heinz no added sugar baked beans",
-   "last": "last 2 months"
+   "name": "M&S lemon & herb chicken breast flatties",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Pizza Express American",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Tideford organic lentil & spinach dhal soup",
+   "last": "7 Nov"
+  },
+  {
+   "name": "Birds Eye garden peas",
+   "last": "7 Nov"
+  },
+  {
+   "name": "Green & Black's 85% dark chocolate",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Penn State sour cream & chive pretzels",
+   "last": "11 Oct"
+  },
+  {
+   "name": "Blue Earth cooked & peeled king prawns",
+   "last": "12 Sep"
+  },
+  {
+   "name": "M&S deli style coleslaw",
+   "last": "7 Nov"
+  },
+  {
+   "name": "Ocado British carrots",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Ocado little gem lettuce",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Ocado brown onions",
+   "last": "31 Oct"
+  },
+  {
+   "name": "Ocado fine asparagus",
+   "last": "11 Oct"
+  },
+  {
+   "name": "M&S British 12 lamb meatballs",
+   "last": "7 Nov"
   },
   {
    "name": "Heinz spaghetti hoops",
-   "last": "last 2 months"
+   "last": "7 Nov"
   },
   {
-   "name": "Gran Luchito soft taco shells",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Gran Luchito smoky chipotle paste",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Gran Luchito Cantina black beans",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Warburtons crumpet thins",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Ocado grated Parmigiano Reggiano",
-   "last": "last 2 months"
-  },
-  {
-   "name": "M&S crème fraîche",
-   "last": "last 2 months"
-  },
-  {
-   "name": "M&S Italian unsmoked diced pancetta",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Pukka lemon, ginger & manuka tea",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Tate & Lyle Fairtrade granulated sugar",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Aunt Bessie's bake at home Yorkshires",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Cathedral City mini snack cheeses",
-   "last": "last 2 months"
-  },
-  {
-   "name": "Heinz lentil dahl",
-   "last": "last 2 months"
+   "name": "Kerrygold salted butter",
+   "last": "4 Oct"
   }
  ],
  "regulars": [
   [
    "Organic semi-skimmed milk 4 pints",
    2,
-   5.3
+   2.65
   ],
   [
    "Free range eggs",
@@ -239,69 +243,14 @@
    2.95
   ],
   [
-   "Cathedral City cheddar",
-   1,
-   4
-  ],
-  [
-   "Kerrygold butter",
-   1,
-   2.65
-  ],
-  [
-   "Skyr yoghurt",
-   2,
-   5.5
-  ],
-  [
-   "Yeo Valley yoghurt",
-   1,
-   2
-  ],
-  [
    "Bananas",
    1,
    0.95
   ],
   [
-   "Grapes",
+   "M&S fine beans",
    1,
-   2.2
-  ],
-  [
-   "Avocados",
-   1,
-   2
-  ],
-  [
-   "Braeburn apples",
-   1,
-   1.9
-  ],
-  [
-   "Easy peelers",
-   1,
-   2
-  ],
-  [
-   "Tomatoes",
-   1,
-   1
-  ],
-  [
-   "Cucumber",
-   1,
-   0.99
-  ],
-  [
-   "Red peppers",
-   1,
-   2.1
-  ],
-  [
-   "Baby spinach",
-   1,
-   1
+   2.3
   ],
   [
    "Tenderstem broccoli",
@@ -309,24 +258,9 @@
    2.4
   ],
   [
-   "Fine beans",
+   "Braeburn apples",
    1,
-   2.65
-  ],
-  [
-   "Potatoes",
-   1,
-   0.85
-  ],
-  [
-   "Onions",
-   1,
-   1.05
-  ],
-  [
-   "Hovis Best of Both",
-   1,
-   1.1
+   1.9
   ],
   [
    "Jason's sourdough",
@@ -334,63 +268,151 @@
    1.9
   ],
   [
-   "Tortilla wraps",
+   "Cucumber",
+   1,
+   0.99
+  ],
+  [
+   "Avocados",
+   1,
+   2.0
+  ],
+  [
+   "Yoplait Skyr 850g",
+   2,
+   2.75
+  ],
+  [
+   "Seedless grapes",
+   1,
+   2.2
+  ],
+  [
+   "Tomatoes",
+   1,
+   1.0
+  ],
+  [
+   "White potatoes",
+   1,
+   0.85
+  ],
+  [
+   "Baby spinach",
+   1,
+   1.0
+  ],
+  [
+   "Yeo Valley natural yoghurt",
+   1,
+   2.0
+  ],
+  [
+   "Cadbury little bars",
+   1,
+   1.4
+  ],
+  [
+   "Cadbury Freddos",
+   1,
+   1.4
+  ],
+  [
+   "M&S southern fried chicken burgers (burger night)",
+   2,
+   5.0
+  ],
+  [
+   "Burger buns",
    1,
    1.5
   ],
   [
-   "Garden peas (frozen)",
+   "Unearthed Spanish potato & onion tortilla",
    1,
-   4.05
+   3.5
   ],
   [
-   "Green & Black's 85%",
+   "Beef chilli: Ocado lean beef mince 750g",
    1,
-   3.25
+   7.7
+  ],
+  [
+   "Kidney beans",
+   2,
+   0.39
+  ],
+  [
+   "Chopped tomatoes",
+   2,
+   0.47
+  ],
+  [
+   "Chilli seasoning",
+   1,
+   1.35
+  ],
+  [
+   "Basmati rice 1kg",
+   1,
+   1.8
+  ],
+  [
+   "Red onions",
+   1,
+   1.05
   ]
  ],
  "lastHad": [
   {
    "name": "Salmon",
-   "weeks": 0
+   "weeks": 1
   },
   {
-   "name": "Beef mince",
-   "weeks": 0
+   "name": "Pork medallions",
+   "weeks": 1
+  },
+  {
+   "name": "Cottage pie",
+   "weeks": 1
+  },
+  {
+   "name": "Pizza",
+   "weeks": 1
+  },
+  {
+   "name": "Chicken fajitas / katsu",
+   "weeks": 1
+  },
+  {
+   "name": "Butter chicken",
+   "weeks": 1
   },
   {
    "name": "Roast chicken",
-   "weeks": 0
+   "weeks": 2
+  },
+  {
+   "name": "Beef mince",
+   "weeks": 2
   },
   {
    "name": "Cod",
-   "weeks": 0
+   "weeks": 2
   },
   {
    "name": "Pork sausages",
-   "weeks": 0
-  },
-  {
-   "name": "Prawns",
-   "weeks": 1
-  },
-  {
-   "name": "Lamb meatballs",
-   "weeks": 1
-  },
-  {
-   "name": "Chicken pie",
-   "weeks": 1
-  },
-  {
-   "name": "Tacos",
-   "weeks": 1
+   "weeks": 2
   }
  ],
  "pastShops": [
   {
+   "date": "Sat 21 Nov",
+   "total": 147.53
+  },
+  {
    "date": "Sun 15 Nov",
-   "total": 118.93
+   "total": 117.23
   },
   {
    "date": "Sat 7 Nov",
@@ -403,179 +425,6 @@
   {
    "date": "Sun 11 Oct",
    "total": 100.14
-  },
-  {
-   "date": "Sun 4 Oct",
-   "total": 78.59
   }
- ],
- "trolley": {
-  "total": 120.68,
-  "savings": 9.85,
-  "items": 44,
-  "slot": "Sat 21 Nov, 7:30–8:30am",
-  "holdUntil": "9:15pm Sun 15 Nov",
-  "holdUntilISO": "2026-11-15T21:15:00+00:00",
-  "filledAt": "Sun 15 Nov, 9pm"
- },
- "agreed": [
-  [
-   "Ocado Red Peppers",
-   1
-  ],
-  [
-   "M&S Perfectly Ripe Medium Hass Avocados",
-   1
-  ],
-  [
-   "Ocado Cucumber",
-   1
-  ],
-  [
-   "Ocado Tomatoes",
-   1
-  ],
-  [
-   "M&S Seedless Easy Peelers",
-   1
-  ],
-  [
-   "Ocado Braeburn Apples",
-   1
-  ],
-  [
-   "Ocado Rainforest Alliance Bananas",
-   1
-  ],
-  [
-   "Ocado Mixed Seedless Grapes",
-   1
-  ],
-  [
-   "Yoplait SKYR High Protein Natural Yoghurt 0% fat",
-   2
-  ],
-  [
-   "Yeo Valley Organic Natural Yoghurt",
-   1
-  ],
-  [
-   "Ocado British Leeks",
-   1
-  ],
-  [
-   "Ocado Brown Onions",
-   1
-  ],
-  [
-   "Ocado British White Potatoes",
-   1
-  ],
-  [
-   "M&S Baby Spinach Washed & Ready to Cook",
-   1
-  ],
-  [
-   "M&S Extra Fine Beans",
-   1
-  ],
-  [
-   "Ocado British Tenderstem Broccoli",
-   1
-  ],
-  [
-   "Cathedral City Mature Cheddar Cheese 550g",
-   1
-  ],
-  [
-   "Good Phats Grass-Fed Organic British Salted Butter (Pam)",
-   1
-  ],
-  [
-   "M&S Organic Semi-Skimmed Milk 4 Pints",
-   2
-  ],
-  [
-   "Ocado Medium Free Range Eggs",
-   1
-  ],
-  [
-   "Mowi 4 Scottish Salmon Fillets",
-   1
-  ],
-  [
-   "Ocado 4 British Pork Loin Medallions",
-   2
-  ],
-  [
-   "Mission Wheat & White Tortilla Wraps",
-   1
-  ],
-  [
-   "Hovis Best of Both Medium Sliced",
-   1
-  ],
-  [
-   "Jason's Ancient Grains & Seeds Ciabattin Sourdough",
-   1
-  ],
-  [
-   "Green & Black's Organic 85% Dark Chocolate",
-   1
-  ],
-  [
-   "Birds Eye Garden Peas 1.2kg",
-   1
-  ],
-  [
-   "Old El Paso Smoky BBQ Fajita Kit",
-   1
-  ],
-  [
-   "Tiger Delight Jumbo Raw King Prawns",
-   1
-  ],
-  [
-   "Blue Dragon Katsu Curry Family Kit",
-   1
-  ],
-  [
-   "Bisto Gravy Granules 300g (Pam)",
-   1
-  ],
-  [
-   "Griddle Bakery Banana Pancake Bites (Pam)",
-   1
-  ],
-  [
-   "M&S British Chicken Thigh Fillets",
-   2
-  ],
-  [
-   "Amoy Straight To Wok Medium Noodles",
-   2
-  ],
-  [
-   "M&S Family Crunchy Veg Medley",
-   1
-  ],
-  [
-   "M&S Italian Unsmoked Diced Pancetta",
-   2
-  ],
-  [
-   "M&S Creme Fraiche 300g",
-   1
-  ],
-  [
-   "Ocado Penne Pasta",
-   1
-  ],
-  [
-   "Ocado Basmati Rice 1kg",
-   1
-  ]
- ],
- "agreedAt": "Sun 15 Nov, 9pm",
- "orderTotal": 120.68
+ ]
 }
