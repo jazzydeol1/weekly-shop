@@ -305,7 +305,12 @@
     const lbl = (p, k) => (p.options.find(o => o.key === k) || {}).label;
     const final = mode === "pam" || approved();
     const n = fixed.length + polls.reduce((s, p) => s + (final ? pick(p).length : 1), 0);
-    const rows = polls.map(p => { const c = pick(p); return `<div class="din"><span><span class="k">${esc(p.question)}</span><br>${c.length ? esc(c.map(k => lbl(p, k)).join(" + ")) : `<span class="muted">${final ? "Neither" : "No votes yet"}</span>`}</span><span class="xs muted" style="text-align:right">${final ? "" : "vote below"}</span></div>`; }).join("")
+    const status = p => {                     // while voting: who's ahead, or a tie, plus your own pick
+      const t = tally(p.id), a = t.A.length, b = t.B.length, my = sets(mine.picks[p.id]).map(k => lbl(p, k)).join(" + ");
+      const line = !a && !b ? `<span class="muted">No votes yet</span>` : a === b ? `Tied ${a}–${b}: ${esc(lbl(p, "A"))} or ${esc(lbl(p, "B"))} <span class="sm muted">· ${esc(plan.approver || "Pam")} decides</span>` : `${esc(lbl(p, a > b ? "A" : "B"))} <span class="sm muted">· leading ${Math.max(a, b)}–${Math.min(a, b)}</span>`;
+      return `${line}<br><span class="xs muted">${my ? "Your pick: " + esc(my) : "You haven't picked yet"}</span>`;
+    };
+    const rows = polls.map(p => { const c = pick(p); return `<div class="din"><span><span class="k">${esc(p.question)}</span><br>${final ? (c.length ? esc(c.map(k => lbl(p, k)).join(" + ")) : `<span class="muted">Neither</span>`) : status(p)}</span><span class="xs muted" style="text-align:right">${final ? "" : "vote below"}</span></div>`; }).join("")
       + fixed.map(d => `<div class="din"><span><span class="k">Planned</span><br>${esc(d.name)}${d.detail ? ` <span class="sm muted">· ${esc(d.detail)}</span>` : ""}</span><span class="xs muted">${d.price ? money(d.price) : ""}</span></div>`).join("");
     const short = n < 6;
     return `<div class="between sec-h"><h2>This week's dinners</h2><span class="xs ${short ? "" : "muted"}" style="${short ? "color:var(--o);font-weight:700" : ""}">${n} dinner${n === 1 ? "" : "s"}${short ? " · needs 6" : ""}</span></div>
